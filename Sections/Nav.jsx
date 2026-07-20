@@ -1,11 +1,12 @@
 import React from "react";
+import Image from "next/image";
 
 export default function Nav() {
   return (
     
       <div className="flex justify-between items-center p-4 bg-[#FAFAF7] text-black h-[80] ">
         <div  className="flex items-center gap-2 w-[120] h-[60]" >
-          <img src="Image/Weplic_Logo.jpeg" alt="Weplic Logo"  className="h-full w-full object-cover" />
+          <Image src="/Image/Weplic_Logo.jpeg" alt="Weplic Logo" width={120} height={60} className="h-full w-full object-cover" />
         </div>
         <div className="flex gap-8 space-x-4 list-none  text-gray-500  font-inter text-sm font-medium leading-5">
           <li>Services</li>

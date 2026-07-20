@@ -51,7 +51,7 @@ export default function Review() {
           </div>
 
           <p className={`${inter.className} text-[15px] leading-relaxed text-[#1A1A1A]`}>
-            "{quote}"
+            &quot;{quote}&quot;
           </p>
 
           <div className='flex items-center gap-3 mt-auto'>

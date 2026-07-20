@@ -67,7 +67,7 @@ export default function Process() {
           Our Proven Process
         </h2>
         <p className={`${inter.className} text-sm font-regular leading-6`}>
-          Transparent and collaborative — you're informed at every stage. No
+          Transparent and collaborative — you&apos;re informed at every stage. No
           surprises, no delays.{" "}
         </p>
         <button className="flex bg-[#FFC800] text-[#000000] font-bold py-3 max-w-max px-6 rounded-full ">

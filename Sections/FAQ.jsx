@@ -27,7 +27,7 @@ export default function FAQSection() {
           </h2>
 
           <p className={`${inter.className} mt-6 text-[15px] leading-7 text-[#777]`}>
-            Can't find your answer? Drop us a line anytime.
+            Can&apos;t find your answer? Drop us a line anytime.
           </p>
 
           <a

@@ -1,9 +1,18 @@
-import React from 'react'
+'use client'
+import React, { useState, useEffect } from 'react'
 import {Inter} from 'next/font/google'
 import {FaArrowRight } from 'react-icons/fa'
 import { LuMouse } from "react-icons/lu";
+import Spline from '@splinetool/react-spline';
 const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
+   
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className=' p-4 flex gap-6 w-full h-auto bg-[#FAFAF7] justify-center '>
       <div className='flex flex-col  gap-8 m-3 p-4'>
@@ -14,7 +23,7 @@ export default function Home() {
 
         <div className='flex flex-col gap-2 text-7xl font-bold leading-[55.89px] tracking-[-1.44px] '>
 
-          <h2>We Don't</h2>
+          <h2>We Don&apos;t</h2>
           <h2>Just Design</h2>
           <h2>We Create</h2>
           <h2>Experiences</h2>
@@ -39,8 +48,14 @@ export default function Home() {
       </div>
 
 
-      <div className="flex-1 min-w-0 flex flex-col items-center" > 
-        <img src="Image/Side-Section.png" alt=""  className="w-full h-auto object-contain"  />
+      <div className="flex-1 min-w-0 flex flex-col items-center justify-center" > 
+        <div className="w-full h-[550px] flex items-center justify-center">
+          {isMounted && (
+            <Spline
+              scene="https://prod.spline.design/n8f5hm4KY4u2N5WR/scene.splinecode" 
+            />
+          )}
+        </div>
 
         <div className='flex bg-white p-2 px-4 rounded-full shadow-md justify-center items-center max-w-max mt-4' > 
           <div className='w-2 h-2 bg-[#FFC800] rounded-full mr-4'></div>

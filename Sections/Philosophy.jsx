@@ -27,7 +27,7 @@ export default function Philosophy() {
       </div>
 
       <div>
-        <p className={`${inter.className} text-[51px] font-bold text-[#ffff] leading-14 tracking-[-1.27px] w-full max-w-[1081px] `}>"Design is not decoration. It's the decisive difference between a product people merely use — and one they <span className='text-[#FFC800]'>love.</span>"</p>
+        <p className={`${inter.className} text-[51px] font-bold text-[#ffff] leading-14 tracking-[-1.27px] w-full max-w-[1081px] `}>&quot;Design is not decoration. It&apos;s the decisive difference between a product people merely use — and one they <span className='text-[#FFC800]'>love.</span>&quot;</p>
       </div>
 
       <div className='flex   w-full  gap-10 justify-between mt-10 '>
