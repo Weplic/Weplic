@@ -1,94 +1,53 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import { Inter } from 'next/font/google'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FiCheck } from 'react-icons/fi'
+import { motion } from 'framer-motion'
+import { FaArrowRight } from 'react-icons/fa'
+import { useApp } from '@/Context/AppContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function FooterContact() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'success' | 'error'
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleSubscribe = (e) => {
-    e.preventDefault()
-    if (!email) return
-
-    // Simple email regex validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setStatus('error')
-      setErrorMsg('Please enter a valid email address.')
-      return
-    }
-
-    setStatus('loading')
-    setErrorMsg('')
-
-    // Mock subscription request
-    setTimeout(() => {
-      setStatus('success')
-      setEmail('')
-    }, 1200)
-  }
+  const { openBrief, openBooking } = useApp()
 
   return (
-    <div className="flex items-center justify-between gap-10">
-      <div className="flex flex-col gap-4">
-        <h2 className="font-semibold text-xl text-white leading-5">Stay in the Loop</h2>
-        <p className={`${inter.className} text-[#6A6A6A] text-sm leading-5 font-regular`}>
-          Design insights, project spotlight, and agency news.
-        </p>
-      </div>
-      <div>
-        <AnimatePresence mode="wait">
-          {status === 'success' ? (
-            <motion.div
-              key="success"
-              className="flex items-center gap-2 bg-[#FFC800]/10 border border-[#FFC800]/20 rounded-full px-6 py-4 text-[#FFC800] text-sm"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-            >
-              <FiCheck className="text-lg" />
-              <span>Successfully subscribed! Check your inbox soon.</span>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubscribe} className="flex flex-col gap-2 relative" key="form">
-              <div className="flex items-center">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-                    if (status === 'error') setStatus('idle')
-                  }}
-                  placeholder="hello.weplic@gmail.com"
-                  className="bg-[#161616] border border-[#333] rounded-full px-8 py-4 text-white placeholder-neutral-600 transition-all duration-300 focus:border-[#FFC800] focus:shadow-[0_0_20px_rgba(255,200,0,0.15)] focus:outline-none text-sm"
-                />
-                <motion.button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="bg-[#FFC800] text-black font-semibold px-6 py-4 text-sm rounded-full ml-4 transition-all duration-300 hover:bg-[#e6b400] hover:shadow-[0_4px_20px_rgba(255,200,0,0.4)] disabled:opacity-50 cursor-hover"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-                </motion.button>
-              </div>
-              {status === 'error' && (
-                <motion.span
-                  className="text-xs text-red-400 absolute top-full mt-2 left-6"
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  {errorMsg}
-                </motion.span>
-              )}
-            </form>
-          )}
-        </AnimatePresence>
+    <div className="relative rounded-3xl bg-gradient-to-r from-[#141414] to-[#1A1A1A] p-6 sm:p-10 border border-white/10 overflow-hidden shadow-2xl">
+      {/* Background glowing ambient element */}
+      <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#FFC800]/15 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="flex flex-col gap-2 max-w-xl">
+          <span className={`${inter.className} text-xs font-bold uppercase tracking-[2px] text-[#FFC800]`}>
+            ⚡ Fast 2-4 Week MVP Sprint
+          </span>
+          <h2 className="font-clash font-bold text-2xl sm:text-4xl text-white leading-tight">
+            Ready to launch your next big idea?
+          </h2>
+          <p className={`${inter.className} text-neutral-300 text-sm sm:text-base leading-relaxed`}>
+            We turn your product vision into production-ready code. Book a call or submit a brief to get started today.
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
+          <motion.button
+            onClick={() => openBrief()}
+            className="bg-[#FFC800] text-black font-bold px-7 py-3.5 text-sm sm:text-base rounded-full transition-all duration-300 hover:bg-[#e6b400] hover:shadow-[0_4px_25px_rgba(255,200,0,0.4)] cursor-pointer flex items-center justify-center gap-2"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>Start a Project</span>
+            <FaArrowRight className="text-xs" />
+          </motion.button>
+
+          <motion.button
+            onClick={() => openBooking()}
+            className="bg-white/5 border border-white/20 text-white font-bold px-7 py-3.5 text-sm sm:text-base rounded-full transition-all duration-300 hover:border-[#FFC800] hover:text-[#FFC800] hover:bg-white/10 cursor-pointer text-center"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Book 15-Min Call
+          </motion.button>
+        </div>
       </div>
     </div>
   )

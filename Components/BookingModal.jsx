@@ -21,6 +21,7 @@ export default function BookingModal() {
   const [email, setEmail] = useState('')
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   // Calendar states
   const [currentMonth, setCurrentMonth] = useState(new Date())
@@ -47,6 +48,7 @@ export default function BookingModal() {
       setName('')
       setEmail('')
       setDescription('')
+      setError('')
     }
   }, [isBookingOpen])
 
@@ -89,13 +91,35 @@ export default function BookingModal() {
     setSelectedTime('') // Reset time
   }
 
-  const handleScheduleSubmit = (e) => {
+  const handleScheduleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
+    setError('')
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          company: 'Meeting Request',
+          service: '30-Min Discovery Meeting',
+          budget: 'N/A',
+          message: `Scheduled Discovery Call on ${selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} at ${selectedTime}.\n\nMeeting Description: ${description}`,
+        }),
+      })
+
+      if (response.ok) {
+        setStep(3)
+      } else {
+        const data = await response.json()
+        setError(data.error || 'Failed to schedule. Please try again.')
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.')
+    } finally {
       setLoading(false)
-      setStep(3)
-    }, 1500)
+    }
   }
 
   return (
@@ -294,6 +318,10 @@ export default function BookingModal() {
                         </div>
                       </div>
                     </div>
+
+                    {error && (
+                      <p className="text-red-500 text-xs font-semibold mb-2">{error}</p>
+                    )}
 
                     <button
                       type="submit"

@@ -2,16 +2,23 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
-export default function MagneticButton({ children, className = '', strength = 0.3 }) {
-  const ref = useRef(null)
+export default function MagneticButton({ children, className = '', strength = 0.25 }) {
+  const containerRef = useRef(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
   const handleMouseMove = (e) => {
+    if (!containerRef.current) return
     const { clientX, clientY } = e
-    const { left, top, width, height } = ref.current.getBoundingClientRect()
-    const middleX = clientX - (left + width / 2)
-    const middleY = clientY - (top + height / 2)
-    setPosition({ x: middleX * strength, y: middleY * strength })
+    const rect = containerRef.current.getBoundingClientRect()
+    const middleX = clientX - (rect.left + rect.width / 2)
+    const middleY = clientY - (rect.top + rect.height / 2)
+    
+    // Clamp movement to avoid extreme displacement
+    const maxOffset = 15
+    const clampedX = Math.max(-maxOffset, Math.min(maxOffset, middleX * strength))
+    const clampedY = Math.max(-maxOffset, Math.min(maxOffset, middleY * strength))
+    
+    setPosition({ x: clampedX, y: clampedY })
   }
 
   const handleMouseLeave = () => {
@@ -19,15 +26,18 @@ export default function MagneticButton({ children, className = '', strength = 0.
   }
 
   return (
-    <motion.div
-      ref={ref}
+    <div
+      ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 350, damping: 15, mass: 0.1 }}
-      className={className}
+      className={`inline-block ${className}`}
     >
-      {children}
-    </motion.div>
+      <motion.div
+        animate={{ x: position.x, y: position.y }}
+        transition={{ type: 'spring', stiffness: 250, damping: 18, mass: 0.2 }}
+      >
+        {children}
+      </motion.div>
+    </div>
   )
 }

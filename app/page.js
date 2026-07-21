@@ -7,28 +7,27 @@ import Philosophy from '@/Sections/Philosophy.jsx'
 import Works from '@/Sections/Works.jsx'
 import Process from '@/Sections/Process.jsx'
 import About from '@/Sections/About.jsx'
-import Review from '@/Sections/Review.jsx'
 import Stats from '@/Sections/Stats.jsx'
 import TechStack from '@/Sections/TechStack.jsx'
 import Contact from '@/Sections/Contact.jsx'
-import  FAQ  from '@/Sections/FAQ.jsx'
+import FAQ from '@/Sections/FAQ.jsx'
 import Services from '@/Sections/Services.jsx'
 import Footer from '@/Sections/Footer.jsx'
-import CustomCursor from '@/Components/CustomCursor.jsx'
 import PageLoader from '@/Components/PageLoader.jsx'
 import ScrollProgress from '@/Components/ScrollProgress.jsx'
 
-// Interactive drawers & modals
+// Interactive drawers & modals & bottom dock
 import ProjectDrawer from '@/Components/ProjectDrawer.jsx'
 import BookingModal from '@/Components/BookingModal.jsx'
 import CaseStudyDrawer from '@/Components/CaseStudyDrawer.jsx'
+import BottomNavDock from '@/Components/BottomNavDock'
 
 export default function Page() {
   return (
     <>
       <PageLoader />
-      <CustomCursor />
       <ScrollProgress />
+      <BottomNavDock />
       
       {/* Drawers/Modals */}
       <ProjectDrawer />
@@ -56,7 +55,6 @@ export default function Page() {
         <About />
       </div>
       
-      <Review />
       <Stats />
       <TechStack />
       
@@ -72,4 +70,3 @@ export default function Page() {
     </>
   )
 }
-

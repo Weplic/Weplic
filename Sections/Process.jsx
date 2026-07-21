@@ -56,10 +56,10 @@ export default function Process() {
   }, [])
 
   return (
-    <div className="flex flex-col gap-8 p-5 bg-[#FAFAF7]" ref={sectionRef}>
-      <div className="flex flex-col gap-6 p-5">
+    <div className="flex flex-col gap-8 py-16 sm:py-24 px-5 sm:px-8 md:px-16 lg:px-24 bg-[#FAFAF7] text-[#040300]" ref={sectionRef}>
+      <div className="flex flex-col gap-4">
         <motion.p
-          className={`${inter.className} text-sm font-semibold leading-4 tracking-[2.4px] text-[#FFC800]`}
+          className={`${inter.className} text-xs sm:text-sm font-bold uppercase tracking-[2.4px] text-amber-600`}
           initial={{ opacity: 0, x: -20 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.5 }}
@@ -69,7 +69,7 @@ export default function Process() {
 
         <TextReveal
           as="h2"
-          className="font-clash font-bold text-[40px] leading-12 tracking-[-0.99px] w-75"
+          className="font-clash font-bold text-3xl sm:text-5xl lg:text-6xl text-[#040300] tracking-tight leading-tight max-w-xl"
           type="words"
           stagger={0.06}
         >
@@ -77,7 +77,7 @@ export default function Process() {
         </TextReveal>
 
         <motion.p
-          className={`${inter.className} text-sm font-regular leading-6`}
+          className={`${inter.className} text-base sm:text-lg font-normal text-neutral-700 leading-relaxed max-w-xl`}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -85,29 +85,30 @@ export default function Process() {
           Transparent and collaborative — you&apos;re informed at every stage. No surprises, no delays.
         </motion.p>
 
-        <MagneticButton>
-          <motion.button
-            onClick={() => openBrief()}
-            className="flex bg-[#FFC800] text-[#000000] font-bold py-3 max-w-max px-6 rounded-full transition-all duration-300 hover:shadow-[0_4px_20px_rgba(255,200,0,0.4)]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <p>Start a Project</p>
-            <BsArrowRightShort size={22} className="ml-2" />
-          </motion.button>
-        </MagneticButton>
+        <div className="mt-2">
+          <MagneticButton>
+            <motion.button
+              onClick={() => openBrief()}
+              className="flex items-center bg-[#FFC800] text-black font-bold py-3.5 px-7 rounded-full shadow-md transition-all duration-300 hover:shadow-[0_4px_20px_rgba(255,200,0,0.4)] cursor-pointer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span>Start a Project</span>
+              <BsArrowRightShort size={22} className="ml-2" />
+            </motion.button>
+          </MagneticButton>
+        </div>
       </div>
 
-
-      <div className="py-20 bg-[#FAFAF7]" ref={timelineRef}>
-        <div className="max-w-6xl px-6">
+      <div className="py-12 bg-[#FAFAF7]" ref={timelineRef}>
+        <div className="max-w-4xl">
           {processData.map((step, index) => (
             <motion.div
               key={step.id}
-              className="flex gap-6"
+              className="flex gap-6 sm:gap-8"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
@@ -115,11 +116,11 @@ export default function Process() {
             >
               <div className="flex flex-col items-center">
                 <motion.div
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 text-xs font-semibold transition-all duration-500"
+                  className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-neutral-300 text-sm font-bold text-[#040300] bg-white transition-all duration-500 shadow-xs flex-shrink-0"
                   whileInView={{
                     backgroundColor: '#FFC800',
                     borderColor: '#FFC800',
-                    color: '#000',
+                    color: '#000000',
                   }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.4, delay: 0.2 }}
@@ -128,15 +129,15 @@ export default function Process() {
                 </motion.div>
 
                 {index !== processData.length - 1 && (
-                  <div className="mt-2 w-px flex-1 bg-neutral-200 relative overflow-hidden">
+                  <div className="mt-2 w-0.5 flex-1 bg-neutral-300 relative overflow-hidden">
                     <div className="timeline-line absolute top-0 left-0 w-full bg-[#FFC800]" style={{ height: 0 }} />
                   </div>
                 )}
               </div>
 
-              <div className="pb-12">
-                <h3 className="text-2xl font-semibold">{step.title}</h3>
-                <p className="mt-2 text-neutral-500 leading-7">{step.description}</p>
+              <div className="pb-10 sm:pb-12">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#040300] font-clash">{step.title}</h3>
+                <p className={`${inter.className} mt-2 text-neutral-700 leading-relaxed text-sm sm:text-base`}>{step.description}</p>
               </div>
             </motion.div>
           ))}

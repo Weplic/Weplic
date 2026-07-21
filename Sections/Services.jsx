@@ -56,12 +56,12 @@ export default function Services() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
 
   return (
-    <section className="bg-[#F4F4F2] py-28" ref={sectionRef}>
-      <div className="px-6">
+    <section className="bg-[#F4F4F2] py-16 sm:py-28 text-[#181818]" ref={sectionRef}>
+      <div className="px-5 sm:px-8 md:px-16 lg:px-24">
         {/* Heading */}
         <TextReveal
           as="h2"
-          className="max-w-md text-[60px] font-semibold leading-[1.05] tracking-[-0.04em] text-[#181818]"
+          className="max-w-2xl text-[36px] sm:text-[48px] md:text-[60px] font-semibold leading-[1.05] tracking-tight text-[#181818] font-clash"
           type="words"
           stagger={0.05}
           duration={0.7}
@@ -70,25 +70,25 @@ export default function Services() {
         </TextReveal>
 
         {/* Services */}
-        <div className="mt-20 border-t border-[#E8E8E8]">
+        <div className="mt-12 sm:mt-20 border-t border-[#D0D0CE]">
           {services.map((service, index) => (
             <motion.div
               key={service.number}
-              className="border-b border-[#E8E8E8] cursor-pointer group"
+              className="border-b border-[#D0D0CE] cursor-pointer group"
               onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
               initial={{ opacity: 0, x: 40 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ backgroundColor: 'rgba(255, 200, 0, 0.03)' }}
+              whileHover={{ backgroundColor: 'rgba(255, 200, 0, 0.05)' }}
             >
-              <div className="flex items-start justify-between gap-10 py-8">
-                <div className="flex gap-6">
-                  <span className="mt-1 w-8 text-xs text-[#8A8A8A]">
+              <div className="flex items-start justify-between gap-6 sm:gap-10 py-6 sm:py-8">
+                <div className="flex gap-4 sm:gap-6 items-start">
+                  <span className="mt-1.5 w-6 sm:w-8 text-xs sm:text-sm font-bold text-amber-600">
                     {service.number}
                   </span>
 
                   <div>
-                    <h3 className="text-[30px] font-medium text-[#181818] transition-colors duration-300 group-hover:text-[#FFC800]">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#181818] font-clash transition-colors duration-300 group-hover:text-amber-600">
                       {service.title}
                     </h3>
 
@@ -101,15 +101,15 @@ export default function Services() {
                           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                           className="overflow-hidden"
                         >
-                          <p className="mt-6 max-w-2xl text-[15px] leading-7 text-[#777]">
+                          <p className="mt-4 sm:mt-6 max-w-2xl text-sm sm:text-base leading-relaxed text-neutral-700 font-normal">
                             {service.description}
                           </p>
 
-                          <div className="mt-6 flex gap-2">
+                          <div className="mt-4 sm:mt-6 flex flex-wrap gap-2">
                             {service.tags?.map((tag, tagIndex) => (
                               <motion.span
                                 key={tag}
-                                className="rounded-full bg-[#181818] px-4 py-2 text-xs font-medium text-white"
+                                className="rounded-full bg-[#181818] px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{
@@ -129,12 +129,12 @@ export default function Services() {
                 </div>
 
                 <motion.div
-                  className="mt-1 text-lg text-[#181818]"
+                  className="mt-1 text-base sm:text-lg text-[#181818] flex-shrink-0"
                   animate={{ rotate: activeIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
                 >
                   {activeIndex === index ? (
-                    <FaMinus className="text-[#F4B400]" />
+                    <FaMinus className="text-amber-600" />
                   ) : (
                     <FaPlus />
                   )}
