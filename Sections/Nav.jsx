@@ -44,7 +44,7 @@ export default function Nav() {
         transition={{ duration: 0.6, delay: 2.6 }}
       >
         <Image
-          src="/Image/Weplic_Logo.jpeg"
+          src="/Image/Weplic_logo.jpeg"
           alt="Weplic Logo"
           width={110}
           height={44}

@@ -22,14 +22,19 @@ export default function CustomCursor() {
       navigator.maxTouchPoints > 0
     
     if (isTouch) {
-      setIsTouchDevice(true)
-      return
+      setTimeout(() => {
+        setIsTouchDevice(true)
+      }, 0)
     }
+  }, [])
+
+  useEffect(() => {
+    if (isTouchDevice) return
 
     const moveCursor = (e) => {
       cursorX.set(e.clientX - 16)
       cursorY.set(e.clientY - 16)
-      if (!isVisible) setIsVisible(true)
+      setIsVisible((prev) => (prev ? prev : true))
     }
 
     const handleMouseOver = (e) => {
@@ -74,7 +79,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeave)
       document.removeEventListener('mouseenter', handleMouseEnter)
     }
-  }, [cursorX, cursorY, isVisible])
+  }, [cursorX, cursorY, isTouchDevice])
 
   // Render nothing on touch/mobile devices
   if (isTouchDevice) return null

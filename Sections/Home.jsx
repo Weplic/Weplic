@@ -11,54 +11,54 @@ import { useApp } from '@/Context/AppContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const products = [
+  {
+    label: 'Web App',
+    emoji: '💻',
+    title: 'Nexus Financial OS',
+    desc: 'AI-driven banking dashboard built for Series A scale.',
+    metrics: [
+      { val: '3 wks', lbl: 'Built In' },
+      { val: '99.9%', lbl: 'Uptime' },
+      { val: '4.9★', lbl: 'Rating' },
+    ],
+    tech: ['Next.js', 'TypeScript', 'Prisma', 'Tailwind'],
+    accent: '#FFC800',
+  },
+  {
+    label: 'Mobile App',
+    emoji: '📱',
+    title: 'Vera Health iOS',
+    desc: 'Patient-first telehealth app with instant video sync.',
+    metrics: [
+      { val: '2 wks', lbl: 'Sprint' },
+      { val: '62%', lbl: '↑ Retention' },
+      { val: 'iOS+And', lbl: 'Cross' },
+    ],
+    tech: ['React Native', 'Swift', 'Supabase', 'Figma'],
+    accent: '#22C55E',
+  },
+  {
+    label: 'AI Platform',
+    emoji: '🤖',
+    title: 'Luminary AI Engine',
+    desc: 'Custom LLM workflow processing 5M+ daily requests.',
+    metrics: [
+      { val: '<50ms', lbl: 'Latency' },
+      { val: '10x', lbl: 'Efficiency' },
+      { val: '$40M', lbl: 'Series A' },
+    ],
+    tech: ['Python', 'PyTorch', 'OpenAI', 'Vector DB'],
+    accent: '#8B5CF6',
+  },
+]
+
 export default function Home() {
   const { openBrief } = useApp()
   const headingRef = useRef(null)
   const showcaseRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [activeTab, setActiveTab] = useState(0)
-
-  const products = [
-    {
-      label: 'Web App',
-      emoji: '💻',
-      title: 'Nexus Financial OS',
-      desc: 'AI-driven banking dashboard built for Series A scale.',
-      metrics: [
-        { val: '3 wks', lbl: 'Built In' },
-        { val: '99.9%', lbl: 'Uptime' },
-        { val: '4.9★', lbl: 'Rating' },
-      ],
-      tech: ['Next.js', 'TypeScript', 'Prisma', 'Tailwind'],
-      accent: '#FFC800',
-    },
-    {
-      label: 'Mobile App',
-      emoji: '📱',
-      title: 'Vera Health iOS',
-      desc: 'Patient-first telehealth app with instant video sync.',
-      metrics: [
-        { val: '2 wks', lbl: 'Sprint' },
-        { val: '62%', lbl: '↑ Retention' },
-        { val: 'iOS+And', lbl: 'Cross' },
-      ],
-      tech: ['React Native', 'Swift', 'Supabase', 'Figma'],
-      accent: '#22C55E',
-    },
-    {
-      label: 'AI Platform',
-      emoji: '🤖',
-      title: 'Luminary AI Engine',
-      desc: 'Custom LLM workflow processing 5M+ daily requests.',
-      metrics: [
-        { val: '<50ms', lbl: 'Latency' },
-        { val: '10x', lbl: 'Efficiency' },
-        { val: '$40M', lbl: 'Series A' },
-      ],
-      tech: ['Python', 'PyTorch', 'OpenAI', 'Vector DB'],
-      accent: '#8B5CF6',
-    },
-  ]
 
   const current = products[activeTab]
 

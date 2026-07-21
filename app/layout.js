@@ -17,6 +17,13 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Weplic | High-Velocity Startup Product Studio",
   description: "Weplic is an AI-native digital product studio building production-ready web and mobile apps for ambitious startups.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/Image/weplic_circular_logo.png", type: "image/png" }
+    ],
+    apple: "/Image/weplic_circular_logo.png"
+  }
 };
 
 export default function RootLayout({ children }) {
