@@ -87,7 +87,7 @@ export default function Home() {
   // Heading letter animation
   useEffect(() => {
     if (!headingRef.current) return
-    const lines = headingRef.current.querySelectorAll('.hero-line')
+    const lines = headingRef.current.querySelectorAll('.hero-line:not(.hero-gradient)')
     lines.forEach((line, i) => {
       const split = new SplitType(line, { types: 'chars' })
       gsap.fromTo(
@@ -104,6 +104,22 @@ export default function Home() {
         }
       )
     })
+
+    const gradLine = headingRef.current.querySelector('.hero-gradient')
+    if (gradLine) {
+      gsap.fromTo(
+        gradLine,
+        { y: 60, opacity: 0, rotateX: -45 },
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          duration: 0.8,
+          delay: 2.5 + 3 * 0.12,
+          ease: 'power3.out',
+        }
+      )
+    }
   }, [])
 
   const fadeUp = {
@@ -153,7 +169,7 @@ export default function Home() {
             <span className="hero-line">We Don&apos;t</span>
             <span className="hero-line">Just <span className="relative inline-block">Design<span className="absolute bottom-1 sm:bottom-2 left-0 w-full h-[4px] sm:h-[6px] bg-[#FFC800] rounded-full" /></span></span>
             <span className="hero-line">We Create</span>
-            <span className="hero-line bg-gradient-to-r from-[#040300] via-[#555] to-[#040300] bg-clip-text text-transparent bg-[length:200%_100%]">
+            <span className="hero-line hero-gradient inline-block bg-gradient-to-r from-[#040300] via-[#555] to-[#040300] bg-clip-text text-transparent bg-[length:200%_100%]">
               Experiences.
             </span>
           </div>
@@ -350,7 +366,7 @@ export default function Home() {
 
             {/* Floating Badges */}
             <motion.div
-              className="absolute -top-3 -right-2 sm:-right-4 bg-[#FFC800] rounded-2xl px-3.5 py-2 shadow-lg shadow-[#FFC800]/25 border-2 border-white z-20"
+              className="absolute -top-3 right-0 sm:-right-4 bg-[#FFC800] rounded-2xl px-3.5 py-2 shadow-lg shadow-[#FFC800]/25 border-2 border-white z-20"
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
@@ -358,7 +374,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="absolute -bottom-3 -left-2 sm:-left-4 bg-white rounded-2xl px-3.5 py-2 shadow-lg border border-neutral-200 z-20"
+              className="absolute -bottom-3 left-0 sm:-left-4 bg-white rounded-2xl px-3.5 py-2 shadow-lg border border-neutral-200 z-20"
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
             >

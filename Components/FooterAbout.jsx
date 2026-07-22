@@ -72,10 +72,9 @@ export default function FooterAbout() {
     {
       title: "Socials",
       list: [
-        { label: "Twitter / X", href: "https://twitter.com", target: "_blank" },
-        { label: "LinkedIn", href: "https://linkedin.com", target: "_blank" },
-        { label: "Dribbble", href: "https://dribbble.com", target: "_blank" },
-        { label: "GitHub", href: "https://github.com", target: "_blank" }
+        { label: "Twitter / X", href: "https://x.com/weplic/status/2077289519016186015?s=46", target: "_blank" },
+        { label: "LinkedIn", href: "https://www.linkedin.com/posts/weplic-b0a402421_every-brand-has-a-story-but-only-the-right-share-7483055952162852864-ZYX3/?utm_source=social_share_send&utm_medium=ios_app&rcm=ACoAAGsGU7oBqS_pMRZtZppgAdKrV0neMhcPD0E&utm_campaign=copy_link", target: "_blank" },
+        { label: "Instagram", href: "https://www.instagram.com/p/DazffpCRtQs/", target: "_blank" },
       ],
     },
     {

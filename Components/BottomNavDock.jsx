@@ -63,7 +63,7 @@ export default function BottomNavDock() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[95] flex lg:hidden items-center gap-1.5 p-2 bg-[#040300]/90 backdrop-blur-2xl border border-white/20 rounded-full shadow-[0_16px_50px_rgba(0,0,0,0.4)]"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[95] flex lg:hidden items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 bg-[#040300]/90 backdrop-blur-2xl border border-white/20 rounded-full shadow-[0_16px_50px_rgba(0,0,0,0.4)] max-w-[calc(100vw-24px)] overflow-x-auto scrollbar-none"
           initial={{ y: 80, opacity: 0, scale: 0.9 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 80, opacity: 0, scale: 0.9 }}
@@ -78,14 +78,14 @@ export default function BottomNavDock() {
               <button
                 key={item.id}
                 onClick={(e) => handleItemClick(e, item)}
-                className={`relative flex items-center justify-center w-11 h-11 rounded-full transition-all duration-300 ${
+                className={`relative flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-full transition-all duration-300 flex-shrink-0 ${
                   isActive
                     ? 'text-black bg-[#FFC800]'
                     : 'text-neutral-400 hover:text-white hover:bg-white/10'
                 }`}
                 aria-label={item.label}
               >
-                <Icon className="text-lg" />
+                <Icon className="text-base sm:text-lg" />
                 {isActive && (
                   <motion.div
                     layoutId="dockActiveBlob"
@@ -98,12 +98,12 @@ export default function BottomNavDock() {
           })}
 
           {/* Vertical Divider */}
-          <div className="w-[1px] h-6 bg-white/20 mx-1" />
+          <div className="w-[1px] h-5 sm:h-6 bg-white/20 mx-0.5 sm:mx-1 flex-shrink-0" />
 
           {/* Quick Project CTA */}
           <motion.button
             onClick={() => openBrief()}
-            className="flex items-center gap-2 bg-[#FFC800] text-black font-bold text-xs px-4 py-2.5 rounded-full shadow-lg cursor-pointer"
+            className="flex items-center gap-1.5 sm:gap-2 bg-[#FFC800] text-black font-bold text-[11px] sm:text-xs px-3 sm:px-4 py-2 sm:py-2.5 rounded-full shadow-lg cursor-pointer flex-shrink-0"
             whileTap={{ scale: 0.92 }}
           >
             <span>Start</span>

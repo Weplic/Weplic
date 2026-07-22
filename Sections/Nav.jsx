@@ -26,7 +26,7 @@ export default function Nav() {
 
   return (
     <motion.div
-      className={`sticky top-0 z-[100] flex justify-between items-center px-5 sm:px-8 md:px-16 lg:px-24 h-[65px] sm:h-[80px] transition-all duration-500 ${
+      className={`sticky top-0 z-[100] w-full max-w-full flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 h-[65px] sm:h-[80px] transition-all duration-500 ${
         scrolled
           ? "bg-[#FAFAF7]/80 backdrop-blur-xl shadow-[0_2px_30px_rgba(0,0,0,0.06)]"
           : "bg-[#FAFAF7]"

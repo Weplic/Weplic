@@ -24,49 +24,51 @@ import BottomNavDock from '@/Components/BottomNavDock'
 
 export default function Page() {
   return (
-    <>
+    <div className="w-full max-w-full overflow-x-hidden relative">
       <PageLoader />
       <ScrollProgress />
       <BottomNavDock />
-      
+
       {/* Drawers/Modals */}
       <ProjectDrawer />
       <BookingModal />
       <CaseStudyDrawer />
 
       <Nav />
-      <Home />
-      <HomeStats /> 
-      <Philosophy />
-      
-      <div id="services">
-        <Services />
-      </div>
-      
-      <div id="work">
-        <Works />
-      </div>
-      
-      <div id="process">
-        <Process />
-      </div>
-      
-      <div id="about">
-        <About />
-      </div>
-      
-      <Stats />
-      <TechStack />
-      
-      <div id="faq">
-        <FAQ />
-      </div>
-      
-      <div id="contact">
-        <Contact />
-      </div>
-      
-      <Footer />
-    </>
+      <main className="w-full max-w-full overflow-x-hidden relative">
+        <Home />
+        <HomeStats />
+        <Philosophy />
+
+        <div id="services">
+          <Services />
+        </div>
+
+        <div id="work">
+          <Works />
+        </div>
+
+        <div id="process">
+          <Process />
+        </div>
+
+        <div id="about">
+          <About />
+        </div>
+
+        <Stats />
+        <TechStack />
+
+        <div id="faq">
+          <FAQ />
+        </div>
+
+        <div id="contact">
+          <Contact />
+        </div>
+
+        <Footer />
+      </main>
+    </div>
   )
 }
