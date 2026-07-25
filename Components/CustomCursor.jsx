@@ -34,60 +34,103 @@ export default function CustomCursor() {
 
     let currentTextNode = null
 
-    const moveCursor = (e) => {
-      cursorX.set(e.clientX - 16)
-      cursorY.set(e.clientY - 16)
-      setIsVisible((prev) => (prev ? prev : true))
-    }
-
     const clearTextMagnification = () => {
       if (currentTextNode) {
         currentTextNode.classList.remove('glass-text-magnified')
+        if (currentTextNode.classList.contains('glass-word-wrapper') && currentTextNode.parentNode) {
+          const parent = currentTextNode.parentNode
+          const textContent = currentTextNode.textContent
+          parent.replaceChild(document.createTextNode(textContent), currentTextNode)
+          parent.normalize()
+        }
         currentTextNode = null
       }
     }
 
-    const handleMouseOver = (e) => {
-      const target = e.target
-      if (!target) return
-
-      const textTarget = (
-        target.closest('a, button, p, h1, h2, h3, h4, h5, h6, span, li, label, strong, b, em') ||
-        (['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'SPAN', 'LI', 'LABEL', 'STRONG', 'B', 'EM', 'A', 'BUTTON'].includes(target.tagName) ? target : null)
-      )
-
-      if (textTarget && textTarget.textContent && textTarget.textContent.trim().length > 0) {
-        if (currentTextNode && currentTextNode !== textTarget) {
-          currentTextNode.classList.remove('glass-text-magnified')
+    const getWordUnderCursor = (e) => {
+      if (!e) return null
+      
+      let range = null
+      if (document.caretRangeFromPoint) {
+        range = document.caretRangeFromPoint(e.clientX, e.clientY)
+      } else if (document.caretPositionFromPoint) {
+        const pos = document.caretPositionFromPoint(e.clientX, e.clientY)
+        if (pos && pos.offsetNode) {
+          range = document.createRange()
+          range.setStart(pos.offsetNode, pos.offset)
+          range.setEnd(pos.offsetNode, pos.offset)
         }
-        currentTextNode = textTarget
+      }
+
+      if (range && range.startContainer) {
+        const node = range.startContainer
+        if (node.nodeType === Node.TEXT_NODE) {
+          const parent = node.parentElement
+          if (parent) {
+            if (
+              parent.tagName === 'A' ||
+              parent.tagName === 'BUTTON' ||
+              parent.classList.contains('word') ||
+              parent.classList.contains('char') ||
+              parent.classList.contains('glass-word-wrapper') ||
+              (parent.textContent && parent.textContent.trim().split(/\s+/).length <= 1)
+            ) {
+              return parent
+            }
+
+            const text = node.nodeValue
+            const offset = range.startOffset
+            let start = offset
+            while (start > 0 && !/\s/.test(text[start - 1])) start--
+            let end = offset
+            while (end < text.length && !/\s/.test(text[end])) end++
+
+            const word = text.slice(start, end).trim()
+            if (word && word.length > 0) {
+              try {
+                const wordRange = document.createRange()
+                wordRange.setStart(node, start)
+                wordRange.setEnd(node, end)
+                const span = document.createElement('span')
+                span.className = 'glass-word-wrapper'
+                wordRange.surroundContents(span)
+                return span
+              } catch (err) {
+                return parent
+              }
+            }
+          }
+        }
+      }
+
+      const target = e.target
+      if (!target) return null
+      return (
+        target.closest('a, button, span, li, label, strong, b, em') ||
+        (['A', 'BUTTON', 'SPAN', 'LI', 'LABEL', 'STRONG', 'B', 'EM'].includes(target.tagName) ? target : null)
+      )
+    }
+
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX - 16)
+      cursorY.set(e.clientY - 16)
+      setIsVisible((prev) => (prev ? prev : true))
+
+      const wordNode = getWordUnderCursor(e)
+      if (wordNode) {
+        if (currentTextNode && currentTextNode !== wordNode) {
+          clearTextMagnification()
+        }
+        currentTextNode = wordNode
         currentTextNode.classList.add('glass-text-magnified')
         setIsHovering(true)
         setIsTextHover(true)
-      } else if (target.classList && target.classList.contains('cursor-hover')) {
-        clearTextMagnification()
-        setIsHovering(true)
-        setIsTextHover(false)
       } else {
-        clearTextMagnification()
-        setIsHovering(false)
-        setIsTextHover(false)
-      }
-    }
-
-    const handleMouseOut = (e) => {
-      const target = e.target
-      if (!target) return
-
-      const textTarget = (
-        target.closest('a, button, p, h1, h2, h3, h4, h5, h6, span, li, label, strong, b, em') ||
-        (['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'SPAN', 'LI', 'LABEL', 'STRONG', 'B', 'EM', 'A', 'BUTTON'].includes(target.tagName) ? target : null)
-      )
-
-      if (textTarget && textTarget === currentTextNode) {
-        clearTextMagnification()
-        setIsHovering(false)
-        setIsTextHover(false)
+        if (currentTextNode) {
+          clearTextMagnification()
+          setIsHovering(false)
+          setIsTextHover(false)
+        }
       }
     }
 
@@ -98,16 +141,12 @@ export default function CustomCursor() {
     const handleMouseEnter = () => setIsVisible(true)
 
     window.addEventListener('mousemove', moveCursor)
-    document.addEventListener('mouseover', handleMouseOver)
-    document.addEventListener('mouseout', handleMouseOut)
     document.addEventListener('mouseleave', handleMouseLeave)
     document.addEventListener('mouseenter', handleMouseEnter)
 
     return () => {
       clearTextMagnification()
       window.removeEventListener('mousemove', moveCursor)
-      document.removeEventListener('mouseover', handleMouseOver)
-      document.removeEventListener('mouseout', handleMouseOut)
       document.removeEventListener('mouseleave', handleMouseLeave)
       document.removeEventListener('mouseenter', handleMouseEnter)
     }
