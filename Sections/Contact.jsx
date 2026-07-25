@@ -1,19 +1,19 @@
 'use client'
-import React, { useRef } from 'react'
+import React from 'react'
 import { IoArrowForward } from "react-icons/io5"
 import { Inter } from 'next/font/google'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import MagneticButton from '@/Components/MagneticButton'
 import FloatingElements from '@/Components/FloatingElements'
 import TextReveal from '@/Components/TextReveal'
 import { useApp } from '@/Context/AppContext'
+import useSectionView from '@/hooks/useSectionView'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Contact() {
   const { openBrief, openBooking } = useApp()
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-100px' })
 
   return (
     <div ref={sectionRef} className="w-full py-20 sm:py-32 px-5 sm:px-8 md:px-16 lg:px-24 bg-[#0A0A0A] text-white flex justify-center items-center relative overflow-hidden">

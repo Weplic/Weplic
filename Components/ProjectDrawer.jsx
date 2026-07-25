@@ -1,9 +1,19 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IoCloseOutline } from 'react-icons/io5'
 import { FiCheckCircle, FiLoader } from 'react-icons/fi'
-import { useApp } from '@/Context/AppContext'
+import { useApp, useActions } from '@/Context/AppContext'
+import useFormSubmission from '@/hooks/useFormSubmission'
+import { ProjectBriefStrategy } from '@/lib/formStrategies'
+
+/**
+ * ProjectDrawer — Strategy + Chain of Responsibility + Mediator patterns
+ *
+ * Strategy Pattern:        Form submission uses ProjectBriefStrategy via useFormSubmission.
+ * Chain of Responsibility: Validation is handled by the strategy's validator chain.
+ * Mediator Pattern:        Open/close state from AppContext. Scroll lock centralized.
+ */
 
 const servicesList = [
   "Website Design & Development",
@@ -22,91 +32,87 @@ const budgetRanges = [
 ]
 
 export default function ProjectDrawer() {
-  const { isBriefOpen, closeBrief, preselectedService } = useApp()
-
-  // Prevent background scroll when open
-  useEffect(() => {
-    if (isBriefOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isBriefOpen])
+  const { isBriefOpen } = useApp()
 
   return (
     <AnimatePresence>
       {isBriefOpen && (
-        <ProjectDrawerInner
-          closeBrief={closeBrief}
-          preselectedService={preselectedService}
-        />
+        <ProjectDrawerInner />
       )}
     </AnimatePresence>
   )
 }
 
-function ProjectDrawerInner({ closeBrief, preselectedService }) {
+function ProjectDrawerInner() {
+  const { preselectedService } = useApp()
+  const { closeBrief } = useActions()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [company, setCompany] = useState('')
-  const [selectedService, setSelectedService] = useState(() => {
+  const [selectedServices, setSelectedServices] = useState(() => {
     if (preselectedService) {
-      const matched = servicesList.find(s => 
+      const matched = servicesList.find(s =>
         s.toLowerCase().includes(preselectedService.toLowerCase())
       )
-      return matched || preselectedService
+      return [matched || preselectedService]
     }
-    return ''
+    return []
   })
   const [selectedBudget, setSelectedBudget] = useState('')
+  const [customBudget, setCustomBudget] = useState('')
   const [message, setMessage] = useState('')
 
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState('')
+  // ── Strategy Pattern: form submission with built-in validation chain ──
+  const { submit, loading, error, success } = useFormSubmission(ProjectBriefStrategy)
+
+  const toggleService = (service) => {
+    setSelectedServices(prev =>
+      prev.includes(service)
+        ? prev.filter(s => s !== service)
+        : [...prev, service]
+    )
+  }
+
+  const handleCustomBudgetChange = (e) => {
+    setCustomBudget(e.target.value)
+    if (e.target.value) {
+      setSelectedBudget('')
+    }
+  }
+
+  const handleBudgetPresetClick = (budget) => {
+    if (selectedBudget === budget) {
+      setSelectedBudget('')
+    } else {
+      setSelectedBudget(budget)
+      setCustomBudget('')
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!name || !email || !message) {
-      setError('Please fill in name, email, and description.')
-      return
-    }
-    setError('')
-    setLoading(true)
 
-    try {
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          company,
-          service: selectedService || 'Not Specified',
-          budget: selectedBudget || 'Not Specified',
-          message,
-        }),
-      })
+    // Strategy handles validation + formatting + submission
+    const submitted = await submit({
+      name,
+      email,
+      company,
+      selectedServices,
+      selectedBudget,
+      customBudget,
+      message,
+    })
 
-      if (response.ok) {
-        setSuccess(true)
-        setName('')
-        setEmail('')
-        setCompany('')
-        setSelectedService('')
-        setSelectedBudget('')
-        setMessage('')
-      } else {
-        const data = await response.json()
-        setError(data.error || 'Something went wrong. Please try again.')
-      }
-    } catch (err) {
-      setError('Network error. Please check your connection and try again.')
-    } finally {
-      setLoading(false)
+    if (submitted) {
+      // Reset form fields on success
+      setName('')
+      setEmail('')
+      setCompany('')
+      setSelectedServices([])
+      setSelectedBudget('')
+      setCustomBudget('')
+      setMessage('')
     }
   }
 
@@ -163,10 +169,7 @@ function ProjectDrawerInner({ closeBrief, preselectedService }) {
                 Thank you for reaching out. A senior partner from our team will review your requirements and follow up within one business day.
               </p>
               <button
-                onClick={() => {
-                  setSuccess(false)
-                  closeBrief()
-                }}
+                onClick={closeBrief}
                 className="mt-6 bg-[#FFC800] text-black font-semibold px-6 py-3 rounded-full hover:bg-[#e6b400] transition-all cursor-hover"
               >
                 Close
@@ -220,22 +223,25 @@ function ProjectDrawerInner({ closeBrief, preselectedService }) {
 
               {/* Services Selection */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider text-neutral-400 font-semibold">What service do you need?</label>
+                <div className="flex justify-between items-center">
+                  <label className="text-xs uppercase tracking-wider text-neutral-400 font-semibold">What service(s) do you need?</label>
+                  <span className="text-[10px] text-neutral-500 font-medium">Select all that apply</span>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {servicesList.map((service) => {
-                    const isSelected = selectedService === service
+                    const isSelected = selectedServices.includes(service)
                     return (
                       <button
                         type="button"
                         key={service}
-                        onClick={() => setSelectedService(isSelected ? '' : service)}
+                        onClick={() => toggleService(service)}
                         className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-hover ${
                           isSelected
                             ? 'bg-[#FFC800] text-black border-[#FFC800]'
                             : 'bg-white/5 border-white/10 hover:bg-white/10 text-white'
                         }`}
                       >
-                        {service}
+                        {isSelected ? `✓ ${service}` : service}
                       </button>
                     )
                   })}
@@ -247,12 +253,12 @@ function ProjectDrawerInner({ closeBrief, preselectedService }) {
                 <label className="text-xs uppercase tracking-wider text-neutral-400 font-semibold">Project Budget</label>
                 <div className="flex flex-wrap gap-2">
                   {budgetRanges.map((budget) => {
-                    const isSelected = selectedBudget === budget
+                    const isSelected = selectedBudget === budget && !customBudget
                     return (
                       <button
                         type="button"
                         key={budget}
-                        onClick={() => setSelectedBudget(isSelected ? '' : budget)}
+                        onClick={() => handleBudgetPresetClick(budget)}
                         className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-hover ${
                           isSelected
                             ? 'bg-[#FFC800] text-black border-[#FFC800]'
@@ -263,6 +269,15 @@ function ProjectDrawerInner({ closeBrief, preselectedService }) {
                       </button>
                     )
                   })}
+                </div>
+                <div className="pt-1">
+                  <input
+                    type="text"
+                    value={customBudget}
+                    onChange={handleCustomBudgetChange}
+                    placeholder="Or enter custom budget (e.g. $15,000 or $5k/mo)"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800] transition-all"
+                  />
                 </div>
               </div>
 

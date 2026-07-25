@@ -2,12 +2,13 @@
 import React, { useRef, useEffect } from "react"
 import { Inter } from "next/font/google"
 import { BsArrowRightShort } from "react-icons/bs"
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TextReveal from '@/Components/TextReveal'
 import MagneticButton from '@/Components/MagneticButton'
 import { useApp } from '@/Context/AppContext'
+import useSectionView from '@/hooks/useSectionView'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -29,8 +30,7 @@ export default function Process() {
   ]
 
   const timelineRef = useRef(null)
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-100px' })
 
   useEffect(() => {
     if (!timelineRef.current) return

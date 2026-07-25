@@ -1,10 +1,10 @@
 'use client'
 import { Inter } from "next/font/google"
 import { BsArrowRightShort } from "react-icons/bs"
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion } from 'framer-motion'
 import WorkCard from "@/Components/WorkCard.jsx"
 import TextReveal from '@/Components/TextReveal'
+import useSectionView from '@/hooks/useSectionView'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,8 +59,7 @@ export default function Works() {
     },
   ]
 
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-80px' })
 
   return (
     <section className="bg-[#FAFAF7] py-16 sm:py-24 text-[#040300]" ref={sectionRef}>

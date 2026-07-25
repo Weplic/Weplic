@@ -1,10 +1,11 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { IoArrowForward } from "react-icons/io5"
 import { IoIosArrowDown } from "react-icons/io"
 import { Inter } from 'next/font/google'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import TextReveal from '@/Components/TextReveal'
+import useSectionView from '@/hooks/useSectionView'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,8 +34,7 @@ const faqs = [
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(-1)
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-100px' })
 
   return (
     <section className="bg-[#F8F8F5] py-16 sm:py-28 text-[#040300]" ref={sectionRef}>

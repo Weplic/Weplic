@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react'
 import { FaPlus, FaMinus } from "react-icons/fa6"
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import TextReveal from '@/Components/TextReveal'
+import useSectionView from '@/hooks/useSectionView'
 
 const services = [
   {
@@ -52,8 +52,7 @@ const services = [
 
 export default function Services() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-100px' })
 
   return (
     <section className="bg-[#F4F4F2] py-16 sm:py-28 text-[#181818]" ref={sectionRef}>

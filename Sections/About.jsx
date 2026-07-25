@@ -1,9 +1,10 @@
 'use client'
-import React, { useRef } from 'react'
+import React from 'react'
 import { Inter } from 'next/font/google'
 import { FiZap, FiCode, FiUsers, FiShield, FiTrendingUp, FiClock } from 'react-icons/fi'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import TextReveal from '@/Components/TextReveal'
+import useSectionView from '@/hooks/useSectionView'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -53,8 +54,7 @@ export default function About() {
     },
   ]
 
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-80px' })
 
   return (
     <div

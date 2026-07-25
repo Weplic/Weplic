@@ -196,7 +196,7 @@ export default function Home() {
             <MagneticButton>
               <motion.button
                 onClick={() => openBrief()}
-                className="bg-[#040300] text-white px-7 py-3.5 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3 group transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] cursor-pointer"
+                className="bg-[#FFC800] text-black px-7 py-3.5 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3 group transition-all duration-300 hover:bg-[#e6b400] hover:shadow-[0_8px_30px_rgba(255,200,0,0.35)] cursor-pointer"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
               >

@@ -67,7 +67,7 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Custom Cursor */
+/* Custom Cursor & Glass Lens Effect */
 .custom-cursor-dot {
   position: fixed;
   top: 0;
@@ -75,11 +75,53 @@ html.lenis body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 200, 0, 0.25);
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 200, 0, 0.18) 60%,
+    rgba(255, 200, 0, 0.05) 100%
+  );
   pointer-events: none;
   z-index: 9997;
-  mix-blend-mode: difference;
-  backdrop-filter: blur(2px);
+  backdrop-filter: contrast(1.12) brightness(1.08) saturate(1.18);
+  -webkit-backdrop-filter: contrast(1.12) brightness(1.08) saturate(1.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    0 8px 24px 0 rgba(0, 0, 0, 0.1),
+    inset 0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 15px rgba(255, 200, 0, 0.25);
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.custom-cursor-dot .glass-reflection {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.custom-cursor-dot.glass-lens {
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 200, 0, 0.28) 60%,
+    rgba(255, 200, 0, 0.12) 100%
+  );
+  border: 1.5px solid rgba(255, 200, 0, 0.7);
+  box-shadow: 
+    0 12px 36px 0 rgba(0, 0, 0, 0.15),
+    inset 0 0 14px rgba(255, 255, 255, 0.7),
+    0 0 25px rgba(255, 200, 0, 0.4);
+}
+
+.custom-cursor-dot.text-lens {
+  backdrop-filter: contrast(1.2) brightness(1.15) saturate(1.25);
+  -webkit-backdrop-filter: contrast(1.2) brightness(1.15) saturate(1.25);
 }
 
 .custom-cursor-ring {
@@ -89,9 +131,24 @@ html.lenis body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 200, 0, 0.4);
+  border: 1.5px solid rgba(255, 200, 0, 0.5);
   pointer-events: none;
   z-index: 9996;
+  box-shadow: 0 0 12px rgba(255, 200, 0, 0.25);
+}
+
+/* Glass Text Magnification Effect on Lens Hover */
+.glass-text-magnified {
+  display: inline-block !important;
+  transform: scale(1.28) translateZ(0) !important;
+  transform-origin: center center !important;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.22s ease, filter 0.22s ease !important;
+  text-shadow: 
+    0 0 20px rgba(255, 200, 0, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  filter: contrast(1.15) brightness(1.1) !important;
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 /* Shimmer animation */

@@ -1,10 +1,11 @@
 'use client'
-import React, { useRef } from 'react'
+import React from 'react'
 import { Inter } from 'next/font/google'
 import { FaStar } from 'react-icons/fa'
 import Image from 'next/image'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import TextReveal from '@/Components/TextReveal'
+import useSectionView from '@/hooks/useSectionView'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,8 +34,7 @@ export default function Review() {
     },
   ]
 
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { sectionRef, isInView } = useSectionView({ margin: '-100px' })
 
   return (
     <div className="flex flex-col gap-8 py-12 px-6 bg-[#FAFAF7]" ref={sectionRef}>
