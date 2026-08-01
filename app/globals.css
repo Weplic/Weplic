@@ -220,8 +220,22 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* SplitType overflow fix */
-.word, .char, .line {
+/* SplitType overflow and spacing fix */
+.line {
+  display: block;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.25em;
+}
+
+.word:last-child {
+  margin-right: 0;
+}
+
+.char {
   display: inline-block;
 }
 

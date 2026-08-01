@@ -100,7 +100,7 @@ export default function Home() {
     if (!headingRef.current) return
     const lines = headingRef.current.querySelectorAll('.hero-line:not(.hero-gradient)')
     lines.forEach((line, i) => {
-      const split = new SplitType(line, { types: 'chars' })
+      const split = new SplitType(line, { types: 'words, chars' })
       gsap.fromTo(
         split.chars,
         { y: 100, opacity: 0, rotateX: -90 },
@@ -153,23 +153,6 @@ export default function Home() {
 
         {/* ── LEFT: Text Content ── */}
         <div className="flex-1 max-w-2xl flex flex-col gap-5 sm:gap-7">
-          {/* Status badge */}
-          <motion.div
-            className="flex bg-white border border-neutral-200/80 py-2 px-4 rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.04)] items-center max-w-max"
-            initial={{ opacity: 0, x: -40, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.6, delay: 2.3, type: 'spring' }}
-          >
-            <motion.div
-              className="w-2 h-2 bg-[#FFC800] rounded-full mr-3 flex-shrink-0"
-              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <p className={`${inter.className} text-[#040300] font-bold text-xs sm:text-sm`}>
-              High-velocity digital product studio
-            </p>
-          </motion.div>
-
           {/* Hero Heading */}
           <div
             ref={headingRef}
