@@ -8,7 +8,9 @@ import {
   CLOSE_BOOKING,
   OPEN_CASE_STUDY,
   CLOSE_CASE_STUDY,
+  NAVIGATE_SECTION,
 } from '@/lib/events'
+import { scrollToSection } from '@/lib/navigation'
 
 /**
  * AppContext — Mediator Pattern
@@ -18,7 +20,8 @@ import {
  * 2. Coordinates state transitions between overlays
  * 3. Ensures only one overlay is open at a time
  * 4. Centralizes scroll lock management
- * 5. Exposes read-only state via useApp()
+ * 5. Coordinates secure section navigation
+ * 6. Exposes read-only state via useApp()
  *
  * Components that trigger actions use useActions() which emits
  * events through the EventBus. Components that read state use useApp().
@@ -88,6 +91,16 @@ export function AppProvider({ children }) {
     unlockScroll()
   }, [])
 
+  // ── Mediator: Secure Navigation Handler ──
+  const handleNavigateSection = useCallback((payload) => {
+    const sectionId = payload?.sectionId
+    if (sectionId) {
+      // Close any open overlays before navigating
+      closeAllOverlays()
+      scrollToSection(sectionId)
+    }
+  }, [closeAllOverlays])
+
   // ── Subscribe to EventBus events ──
   useEventBus(OPEN_BRIEF, handleOpenBrief)
   useEventBus(CLOSE_BRIEF, handleCloseBrief)
@@ -95,6 +108,7 @@ export function AppProvider({ children }) {
   useEventBus(CLOSE_BOOKING, handleCloseBooking)
   useEventBus(OPEN_CASE_STUDY, handleOpenCaseStudy)
   useEventBus(CLOSE_CASE_STUDY, handleCloseCaseStudy)
+  useEventBus(NAVIGATE_SECTION, handleNavigateSection)
 
   // ── Cleanup scroll lock on unmount ──
   useEffect(() => {
@@ -165,6 +179,10 @@ export function useActions() {
     eventBus.emit(CLOSE_CASE_STUDY)
   }, [])
 
+  const navigateToSection = useCallback((sectionId) => {
+    eventBus.emit(NAVIGATE_SECTION, { sectionId })
+  }, [])
+
   return {
     openBrief,
     closeBrief,
@@ -172,5 +190,6 @@ export function useActions() {
     closeBooking,
     openCaseStudy,
     closeCaseStudy,
+    navigateToSection,
   }
 }

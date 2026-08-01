@@ -4,8 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FiHome, FiGrid, FiBriefcase, FiLayers, FiInfo, FiSend } from 'react-icons/fi'
 import { useApp } from '@/Context/AppContext'
 
+import useSecureNavigation from '@/hooks/useSecureNavigation'
+
 export default function BottomNavDock() {
   const { openBrief } = useApp()
+  const { navigateToSection } = useSecureNavigation()
   const [activeSection, setActiveSection] = useState('home')
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -51,12 +54,7 @@ export default function BottomNavDock() {
 
   const handleItemClick = (e, item) => {
     e.preventDefault()
-    if (item.id === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      const el = document.getElementById(item.id)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
+    navigateToSection(item.id)
   }
 
   return (

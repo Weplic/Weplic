@@ -22,9 +22,12 @@ import BookingModal from '@/Components/BookingModal.jsx'
 import CaseStudyDrawer from '@/Components/CaseStudyDrawer.jsx'
 import BottomNavDock from '@/Components/BottomNavDock'
 
+import SecurityGuard from '@/Components/SecurityGuard'
+
 export default function Page() {
   return (
     <div className="w-full max-w-full overflow-x-hidden relative">
+      <SecurityGuard />
       <PageLoader />
       <ScrollProgress />
       <BottomNavDock />

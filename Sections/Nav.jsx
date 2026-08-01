@@ -5,8 +5,11 @@ import { motion } from "framer-motion";
 import MagneticButton from "@/Components/MagneticButton";
 import { useApp } from "@/Context/AppContext";
 
+import useSecureNavigation from "@/hooks/useSecureNavigation";
+
 export default function Nav() {
   const { openBrief } = useApp();
+  const { navigateToSection } = useSecureNavigation();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -16,6 +19,11 @@ export default function Nav() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (e, targetHash) => {
+    e.preventDefault();
+    navigateToSection(targetHash);
+  };
 
   const navLinks = [
     { name: "Services", href: "#services" },
@@ -38,6 +46,7 @@ export default function Nav() {
       {/* Brand Logo */}
       <motion.a
         href="#"
+        onClick={(e) => handleNavClick(e, '#')}
         className="flex items-center w-[95px] sm:w-[110px] h-[38px] sm:h-[44px]"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -62,7 +71,13 @@ export default function Nav() {
             transition={{ duration: 0.4, delay: 2.7 + i * 0.1 }}
             className="relative cursor-pointer group"
           >
-            <a href={link.href} className="hover:text-amber-600 transition-colors">{link.name}</a>
+            <a
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="hover:text-amber-600 transition-colors"
+            >
+              {link.name}
+            </a>
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#FFC800] transition-all duration-300 group-hover:w-full" />
           </motion.li>
         ))}
@@ -70,7 +85,10 @@ export default function Nav() {
 
       {/* Desktop CTA */}
       <div className="hidden md:flex items-center">
-        <a href="#contact">
+        <a
+          href="#contact"
+          onClick={(e) => handleNavClick(e, '#contact')}
+        >
           <motion.button
             className="text-[#040300] font-inter text-sm font-semibold leading-5 relative group mr-6 hover:text-amber-600 transition-colors"
             initial={{ opacity: 0, y: -20 }}
