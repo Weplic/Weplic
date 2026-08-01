@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IoCloseOutline } from 'react-icons/io5'
 import { FiExternalLink, FiTrendingUp } from 'react-icons/fi'
@@ -7,15 +7,16 @@ import { useApp } from '@/Context/AppContext'
 import Image from 'next/image'
 
 const caseStudyDetails = {
-  "Nexus Finance": {
-    challenge: "Nexus Finance, a leading fintech startup, struggled with complex user onboarding and low mobile transaction rates. Their design system was fragmented across teams, causing slow product updates and inconsistent user interfaces.",
-    solution: "We rebuilt their web and mobile interface from the absolute ground up. Our team designed a modular design system, consolidated complex multi-step identity checks into single-screen interactions, and designed customizable dashboard layouts that put high-priority actions front and center.",
-    scope: ["Fintech UI/UX", "Brand Strategy", "Design System", "Mobile Development"],
+  "Onirica Archive": {
+    challenge: "Onirica Archive needed an interactive, surrealist digital web platform to archive and visualize human dreams with complex 3D particle systems without compromising performance or mobile frame rates.",
+    solution: "We engineered a WebGL interactive canvas using Three.js and GSAP. We created custom shader materials, optimized 3D geometry buffers, and built a fluid, responsive navigation system that delivers 60fps across mobile and desktop devices.",
+    scope: ["3D WebGL", "Surrealist UI/UX", "Design System", "Creative Engineering"],
     results: [
-      { label: "User Retention", value: "+340%" },
-      { label: "App Store Rating", value: "4.9★" },
-      { label: "Global Markets", value: "12" }
-    ]
+      { label: "Interactive Sessions", value: "1.2M+" },
+      { label: "Performance Rank", value: "Awwwards SOTD" },
+      { label: "Rendering Latency", value: "<60ms" }
+    ],
+    liveUrl: "https://onirica-archive.netlify.app/"
   },
   "Luminary AI": {
     challenge: "As a fast-growing Series A AI provider, Luminary AI needed a brand identity and a high-performance marketing landing site that clearly communicated their complex LLM orchestration layers to senior enterprise CTOs.",
@@ -42,18 +43,7 @@ const caseStudyDetails = {
 export default function CaseStudyDrawer() {
   const { activeCaseStudy, closeCaseStudy, openBrief } = useApp()
 
-  // Prevent background scroll when open
-  useEffect(() => {
-    if (activeCaseStudy) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [activeCaseStudy])
-
+  // Scroll lock is managed centrally by AppProvider (Mediator pattern)
   const study = activeCaseStudy ? caseStudyDetails[activeCaseStudy.title] : null
 
   return (
@@ -90,13 +80,13 @@ export default function CaseStudyDrawer() {
               {/* Close Button */}
               <button
                 onClick={closeCaseStudy}
-                className="absolute top-6 right-6 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all cursor-hover"
+                className="absolute top-6 right-6 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all cursor-pointer"
               >
                 <IoCloseOutline size={26} />
               </button>
 
               <div className="absolute bottom-6 left-6">
-                <span className="text-[#FFC800] text-xs font-semibold uppercase tracking-wider font-inter">CASE STUDY</span>
+                <span className="text-[#FFC800] text-xs font-semibold uppercase tracking-wider font-inter">PROJECT OVERVIEW</span>
                 <h3 className="text-3xl font-bold font-clash text-white mt-1">{activeCaseStudy.title}</h3>
               </div>
             </div>
@@ -145,21 +135,31 @@ export default function CaseStudyDrawer() {
             </div>
 
             {/* Bottom Panel Actions */}
-            <div className="p-6 border-t border-white/5 bg-neutral-950 flex gap-4">
+            <div className="p-6 border-t border-white/5 bg-neutral-950 flex flex-wrap gap-4">
+              {(study.liveUrl || activeCaseStudy.liveUrl) && (
+                <a
+                  href={study.liveUrl || activeCaseStudy.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#FFC800] text-black font-semibold px-6 py-3.5 rounded-xl hover:bg-[#e6b400] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  Visit Live Site <FiExternalLink />
+                </a>
+              )}
               <button
                 onClick={() => {
                   closeCaseStudy()
                   openBrief(activeCaseStudy.title)
                 }}
-                className="flex-1 bg-[#FFC800] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e6b400] transition-all text-center cursor-hover"
+                className="flex-1 bg-white/10 border border-white/15 text-white font-semibold py-3.5 rounded-xl hover:bg-white/20 transition-all text-center cursor-pointer"
               >
                 Request Similar Project
               </button>
               <button
                 onClick={closeCaseStudy}
-                className="border border-white/20 text-white font-semibold px-6 py-3.5 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2 cursor-hover"
+                className="border border-white/20 text-white font-semibold px-6 py-3.5 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                Close Drawer
+                Close
               </button>
             </div>
           </motion.div>

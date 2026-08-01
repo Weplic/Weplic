@@ -124,7 +124,7 @@ function BookingModalInner() {
             {/* Close Button */}
             <button
               onClick={closeBooking}
-              className="absolute top-6 right-6 p-1.5 rounded-full hover:bg-neutral-100 text-neutral-600 transition-all cursor-hover"
+              className="absolute top-6 right-6 p-1.5 rounded-full hover:bg-neutral-100 text-neutral-600 transition-all cursor-pointer"
             >
               <IoCloseOutline size={24} />
             </button>

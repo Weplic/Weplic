@@ -143,7 +143,7 @@ function ProjectDrawerInner() {
           </div>
           <button
             onClick={closeBrief}
-            className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-all cursor-hover"
+            className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-all cursor-pointer"
           >
             <IoCloseOutline size={26} />
           </button>
@@ -170,7 +170,7 @@ function ProjectDrawerInner() {
               </p>
               <button
                 onClick={closeBrief}
-                className="mt-6 bg-[#FFC800] text-black font-semibold px-6 py-3 rounded-full hover:bg-[#e6b400] transition-all cursor-hover"
+                className="mt-6 bg-[#FFC800] text-black font-semibold px-6 py-3 rounded-full hover:bg-[#e6b400] transition-all cursor-pointer"
               >
                 Close
               </button>
@@ -204,7 +204,7 @@ function ProjectDrawerInner() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="sarah@nexus.finance"
+                    placeholder="you@yourcompany.com"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800] transition-all"
                   />
                 </div>
@@ -215,7 +215,7 @@ function ProjectDrawerInner() {
                     type="text"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
-                    placeholder="Nexus Finance"
+                    placeholder="Your Company"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800] transition-all"
                   />
                 </div>
@@ -235,7 +235,7 @@ function ProjectDrawerInner() {
                         type="button"
                         key={service}
                         onClick={() => toggleService(service)}
-                        className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-hover ${
+                        className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-[#FFC800] text-black border-[#FFC800]'
                             : 'bg-white/5 border-white/10 hover:bg-white/10 text-white'
@@ -259,7 +259,7 @@ function ProjectDrawerInner() {
                         type="button"
                         key={budget}
                         onClick={() => handleBudgetPresetClick(budget)}
-                        className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-hover ${
+                        className={`px-4 py-2 rounded-full text-xs font-medium border transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-[#FFC800] text-black border-[#FFC800]'
                             : 'bg-white/5 border-white/10 hover:bg-white/10 text-white'
@@ -298,7 +298,7 @@ function ProjectDrawerInner() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#FFC800] text-black font-semibold py-4 rounded-xl hover:bg-[#e6b400] transition-all flex items-center justify-center gap-2 cursor-hover disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#FFC800] text-black font-semibold py-4 rounded-xl hover:bg-[#e6b400] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>

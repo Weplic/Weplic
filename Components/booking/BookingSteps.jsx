@@ -79,8 +79,8 @@ function DateTimeStep({ data, onChange, onNext }) {
                 {monthNames[data.currentMonth.getMonth()]} {data.currentMonth.getFullYear()}
               </span>
               <div className="flex gap-2 text-neutral-600">
-                <button onClick={prevMonth} className="p-1 hover:bg-neutral-100 rounded cursor-hover"><FiChevronLeft /></button>
-                <button onClick={nextMonth} className="p-1 hover:bg-neutral-100 rounded cursor-hover"><FiChevronRight /></button>
+                <button onClick={prevMonth} className="p-1 hover:bg-neutral-100 rounded cursor-pointer"><FiChevronLeft /></button>
+                <button onClick={nextMonth} className="p-1 hover:bg-neutral-100 rounded cursor-pointer"><FiChevronRight /></button>
               </div>
             </div>
 
@@ -100,7 +100,7 @@ function DateTimeStep({ data, onChange, onNext }) {
                     key={`day-${i}`}
                     disabled={isPast}
                     onClick={() => handleDateSelect(day)}
-                    className={`aspect-square text-xs font-semibold rounded-full flex items-center justify-center transition-all cursor-hover ${
+                    className={`aspect-square text-xs font-semibold rounded-full flex items-center justify-center transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-neutral-900 text-white font-bold'
                         : isPast
@@ -131,7 +131,7 @@ function DateTimeStep({ data, onChange, onNext }) {
                   <button
                     key={slot}
                     onClick={() => onChange({ selectedTime: slot })}
-                    className={`py-2 rounded-xl text-xs font-semibold border transition-all cursor-hover text-center ${
+                    className={`py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer text-center ${
                       isTimeSelected
                         ? 'bg-[#FFC800] text-black border-[#FFC800]'
                         : 'border-neutral-200 hover:border-neutral-800 text-neutral-700'
@@ -149,7 +149,7 @@ function DateTimeStep({ data, onChange, onNext }) {
       <button
         disabled={!data.selectedDate || !data.selectedTime}
         onClick={onNext}
-        className="w-full bg-neutral-900 text-white font-semibold py-3.5 rounded-xl hover:bg-neutral-800 transition-all text-center cursor-hover disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full bg-neutral-900 text-white font-semibold py-3.5 rounded-xl hover:bg-neutral-800 transition-all text-center cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Next Step
       </button>
@@ -166,7 +166,7 @@ function DetailsStep({ data, onChange, onPrev, onSubmit, loading, error }) {
           <button
             type="button"
             onClick={onPrev}
-            className="text-xs text-neutral-400 font-bold hover:text-black flex items-center gap-1 cursor-hover"
+            className="text-xs text-neutral-400 font-bold hover:text-black flex items-center gap-1 cursor-pointer"
           >
             <FiChevronLeft /> BACK TO DATE
           </button>
@@ -196,7 +196,7 @@ function DetailsStep({ data, onChange, onPrev, onSubmit, loading, error }) {
               required
               value={data.email}
               onChange={(e) => onChange({ email: e.target.value })}
-              placeholder="sarah@nexus.finance"
+              placeholder="you@yourcompany.com"
               className="border border-neutral-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
             />
           </div>
@@ -222,7 +222,7 @@ function DetailsStep({ data, onChange, onPrev, onSubmit, loading, error }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#FFC800] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e6b400] transition-all text-center cursor-hover flex items-center justify-center gap-2"
+        className="w-full bg-[#FFC800] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e6b400] transition-all text-center cursor-pointer flex items-center justify-center gap-2"
       >
         {loading ? 'Scheduling...' : 'Schedule Invitation'}
       </button>
@@ -245,7 +245,7 @@ function SuccessStep({ data, onClose }) {
       </p>
       <button
         onClick={onClose}
-        className="mt-6 bg-neutral-900 text-white font-semibold px-6 py-3 rounded-full hover:bg-neutral-800 transition-all cursor-hover"
+        className="mt-6 bg-neutral-900 text-white font-semibold px-6 py-3 rounded-full hover:bg-neutral-800 transition-all cursor-pointer"
       >
         Done
       </button>

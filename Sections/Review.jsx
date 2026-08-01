@@ -13,8 +13,8 @@ export default function Review() {
   const testimonials = [
     {
       quote: "WEPLIC transformed our product in ways we couldn't have imagined. Their attention to detail and strategic design thinking elevated our entire brand. Conversion rate increased 40% within the first month.",
-      name: "Sarah Chen",
-      role: "CTO · Nexus Finance",
+      name: "Maneesh Sen",
+      role: "Creative Director · Onirica Archive",
       avatar: "/Image/Photo.png",
       elevated: false,
     },

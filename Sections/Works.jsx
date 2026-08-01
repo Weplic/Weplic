@@ -14,18 +14,19 @@ export default function Works() {
   const worksData = [
     {
       id: 1,
-      title: "Nexus Finance",
-      category: "Fintech",
+      title: "Onirica Archive",
+      category: "3D Web Archive",
       description:
-        "A complete digital banking experience — from identity to interface. We redesigned Nexus's entire product suite for web and mobile, building a design system from the ground up.",
+        "An immersive digital archive visualising human dreams through fluid WebGL animations, surrealist 3D design, and gravity-defying interactive navigation.",
       stats: [
-        "340% increase in user retention",
-        "4.9★ App Store rating",
-        "Launched in 12 markets",
+        "1.2M+ interactive sessions",
+        "Awwwards Site of the Day",
+        "<60ms WebGL rendering latency",
       ],
-      deliverables: ["Design System", "Web App", "Mobile App", "Brand Identity"],
-      techStack: ["React", "Node.js", "Figma", "Flutter"],
-      accent: "#FFC800",
+      deliverables: ["WebGL & 3D Design", "Interactive Archive", "Design System", "Creative Dev"],
+      techStack: ["Three.js", "GSAP", "React", "WebGL"],
+      accent: "#A855F7",
+      liveUrl: "https://onirica-archive.netlify.app/",
     },
     {
       id: 2,
@@ -88,13 +89,13 @@ export default function Works() {
 
           <a href="#contact">
             <motion.button
-              className="group flex items-center gap-2 font-bold text-[#040300] cursor-hover text-base"
+              className="group flex items-center gap-2 font-bold text-[#040300] cursor-pointer text-base"
               initial={{ opacity: 0, x: 20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ x: 5 }}
             >
-              All Case Studies
+              All Featured Projects
               <BsArrowRightShort
                 size={24}
                 className="rotate-[315deg] transition group-hover:translate-x-1 text-[#040300]"

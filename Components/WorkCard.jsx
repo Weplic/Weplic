@@ -121,21 +121,37 @@ export default function WorkCard({ work }) {
         </motion.div>
 
         {/* CTA */}
-        <motion.button
-          onClick={() => openCaseStudy(work)}
-          className="group/btn mt-8 flex w-fit items-center gap-2 font-bold text-[#040300] relative cursor-hover text-base"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          whileHover={{ x: 5 }}
-        >
-          View Case Study
-          <BsArrowRightShort
-            size={24}
-            className="transition-transform duration-300 group-hover/btn:translate-x-2 text-[#040300]"
-          />
-          <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#FFC800] transition-all duration-300 group-hover/btn:w-full" />
-        </motion.button>
+        <div className="mt-8 flex items-center gap-4 flex-wrap">
+          <motion.button
+            onClick={() => openCaseStudy(work)}
+            className="group/btn flex w-fit items-center gap-2 font-bold text-[#040300] relative cursor-pointer text-base"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            whileHover={{ x: 5 }}
+          >
+            Explore Project
+            <BsArrowRightShort
+              size={24}
+              className="transition-transform duration-300 group-hover/btn:translate-x-2 text-[#040300]"
+            />
+            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#FFC800] transition-all duration-300 group-hover/btn:w-full" />
+          </motion.button>
+
+          {work.liveUrl && (
+            <motion.a
+              href={work.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-black bg-neutral-100 hover:bg-neutral-200 px-4 py-2 rounded-full transition-all cursor-pointer"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              Visit Live Site ↗
+            </motion.a>
+          )}
+        </div>
       </div>
     </motion.div>
   )

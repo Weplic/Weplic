@@ -15,15 +15,15 @@ const products = [
   {
     label: 'Web App',
     emoji: '💻',
-    title: 'Nexus Financial OS',
-    desc: 'AI-driven banking dashboard built for Series A scale.',
+    title: 'Onirica Archive',
+    desc: 'Immersive 3D dream archive with surrealist WebGL navigation.',
     metrics: [
-      { val: '3 wks', lbl: 'Built In' },
-      { val: '99.9%', lbl: 'Uptime' },
-      { val: '4.9★', lbl: 'Rating' },
+      { val: '1.2M+', lbl: 'Sessions' },
+      { val: '<60ms', lbl: 'Render' },
+      { val: 'SOTD', lbl: 'Awwwards' },
     ],
-    tech: ['Next.js', 'TypeScript', 'Prisma', 'Tailwind'],
-    accent: '#FFC800',
+    tech: ['Three.js', 'GSAP', 'React', 'WebGL'],
+    accent: '#A855F7',
   },
   {
     label: 'Mobile App',
@@ -59,8 +59,19 @@ export default function Home() {
   const showcaseRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [activeTab, setActiveTab] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   const current = products[activeTab]
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Auto-rotate tabs
   useEffect(() => {
@@ -150,7 +161,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 2.3, type: 'spring' }}
           >
             <motion.div
-              className="w-2 h-2 bg-[#FFC800] rounded-full mr-3"
+              className="w-2 h-2 bg-[#FFC800] rounded-full mr-3 flex-shrink-0"
               animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
@@ -162,21 +173,34 @@ export default function Home() {
           {/* Hero Heading */}
           <div
             ref={headingRef}
-            className="flex flex-col text-[40px] sm:text-[56px] md:text-[64px] lg:text-[72px] font-bold leading-[1.02] tracking-[-0.03em] text-[#040300] font-clash relative"
+            className="relative w-full"
             style={{ perspective: '1000px' }}
           >
-            <div className="absolute -left-4 sm:-left-6 top-3 sm:top-5 w-2.5 h-2.5 bg-[#FFC800] rounded-full hidden sm:block" />
-            <span className="hero-line">We Don&apos;t</span>
-            <span className="hero-line">Just <span className="relative inline-block">Design<span className="absolute bottom-1 sm:bottom-2 left-0 w-full h-[4px] sm:h-[6px] bg-[#FFC800] rounded-full" /></span></span>
-            <span className="hero-line">We Create</span>
-            <span className="hero-line hero-gradient inline-block bg-gradient-to-r from-[#040300] via-[#555] to-[#040300] bg-clip-text text-transparent bg-[length:200%_100%]">
-              Experiences.
-            </span>
+            {/* Mobile: 2 wide lines that fill the screen width */}
+            <div className="flex flex-col sm:hidden text-[34px] xs:text-[38px] font-bold leading-[1.08] tracking-[-0.035em] text-[#040300] font-clash">
+              <span className="hero-line">
+                We Don&apos;t Just <span className="relative inline-block">Design<span className="absolute bottom-1 left-0 w-full h-[4px] bg-[#FFC800] rounded-full" /></span>
+              </span>
+              <span className="hero-line hero-gradient inline-block bg-gradient-to-r from-[#040300] via-[#555] to-[#040300] bg-clip-text text-transparent bg-[length:200%_100%]">
+                We Create Experiences.
+              </span>
+            </div>
+
+            {/* Desktop: 4 editorial lines */}
+            <div className="hidden sm:flex sm:flex-col text-[56px] md:text-[64px] lg:text-[72px] font-bold leading-[1.02] tracking-[-0.03em] text-[#040300] font-clash relative">
+              <div className="absolute -left-6 top-5 w-2.5 h-2.5 bg-[#FFC800] rounded-full" />
+              <span className="hero-line">We Don&apos;t</span>
+              <span className="hero-line">Just <span className="relative inline-block">Design<span className="absolute bottom-2 left-0 w-full h-[6px] bg-[#FFC800] rounded-full" /></span></span>
+              <span className="hero-line">We Create</span>
+              <span className="hero-line hero-gradient inline-block bg-gradient-to-r from-[#040300] via-[#555] to-[#040300] bg-clip-text text-transparent bg-[length:200%_100%]">
+                Experiences.
+              </span>
+            </div>
           </div>
 
           {/* Sub-text */}
           <motion.p
-            className={`${inter.className} text-base sm:text-lg leading-relaxed text-neutral-600 max-w-[440px]`}
+            className={`${inter.className} text-base sm:text-lg leading-relaxed text-neutral-600 w-full max-w-full sm:max-w-[440px]`}
             custom={1}
             variants={fadeUp}
             initial="hidden"
@@ -187,7 +211,7 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-3 mt-1"
+            className="flex flex-col sm:flex-row gap-3 mt-1 w-full sm:w-auto"
             custom={2}
             variants={fadeUp}
             initial="hidden"
@@ -196,7 +220,7 @@ export default function Home() {
             <MagneticButton>
               <motion.button
                 onClick={() => openBrief()}
-                className="bg-[#FFC800] text-black px-7 py-3.5 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3 group transition-all duration-300 hover:bg-[#e6b400] hover:shadow-[0_8px_30px_rgba(255,200,0,0.35)] cursor-pointer"
+                className="w-full sm:w-auto bg-[#FFC800] text-black px-7 py-3.5 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3 group transition-all duration-300 hover:bg-[#e6b400] hover:shadow-[0_8px_30px_rgba(255,200,0,0.35)] cursor-pointer"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
               >
@@ -206,9 +230,9 @@ export default function Home() {
             </MagneticButton>
 
             <MagneticButton>
-              <a href="#work">
+              <a href="#work" className="w-full sm:w-auto">
                 <motion.button
-                  className="bg-white border-2 border-neutral-200 text-[#040300] px-7 py-3.5 rounded-full text-sm sm:text-base font-bold transition-all duration-300 hover:border-[#FFC800] hover:shadow-[0_4px_20px_rgba(255,200,0,0.15)] cursor-pointer"
+                  className="w-full sm:w-auto bg-white border-2 border-neutral-200 text-[#040300] px-7 py-3.5 rounded-full text-sm sm:text-base font-bold transition-all duration-300 hover:border-[#FFC800] hover:shadow-[0_4px_20px_rgba(255,200,0,0.15)] cursor-pointer flex items-center justify-center"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                 >
@@ -218,9 +242,9 @@ export default function Home() {
             </MagneticButton>
           </motion.div>
 
-          {/* Micro Trust Badges (Desktop) */}
+          {/* Micro Trust Badges */}
           <motion.div
-            className="hidden sm:flex items-center gap-6 mt-2"
+            className="flex flex-wrap items-center gap-3 sm:gap-6 mt-2"
             custom={3}
             variants={fadeUp}
             initial="hidden"
@@ -231,9 +255,9 @@ export default function Home() {
               { icon: '🔒', text: '100% IP Ownership' },
               { icon: '🚀', text: '15+ MVPs Shipped' },
             ].map((badge) => (
-              <div key={badge.text} className="flex items-center gap-2">
-                <span className="text-sm">{badge.icon}</span>
-                <span className={`${inter.className} text-xs font-semibold text-neutral-500`}>{badge.text}</span>
+              <div key={badge.text} className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-xs sm:text-sm">{badge.icon}</span>
+                <span className={`${inter.className} text-[11px] sm:text-xs font-semibold text-neutral-500`}>{badge.text}</span>
               </div>
             ))}
           </motion.div>
@@ -242,22 +266,35 @@ export default function Home() {
         {/* ── RIGHT: Interactive Product Showcase ── */}
         <motion.div
           ref={showcaseRef}
-          className="flex-1 w-full max-w-[520px] relative"
+          className="flex-1 w-full max-w-[520px] relative my-4 sm:my-0"
           initial={{ opacity: 0, y: 50, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, delay: 2.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
             className="relative"
-            style={{
-              rotateX: mousePos.y,
-              rotateY: mousePos.x,
-              transformPerspective: 1200,
-            }}
+            style={
+              isMobile
+                ? {}
+                : {
+                    rotateX: mousePos.y,
+                    rotateY: mousePos.x,
+                    transformPerspective: 1200,
+                  }
+            }
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           >
+            {/* Floating Top Badge */}
+            <motion.div
+              className="absolute -top-4 right-3 sm:-right-4 bg-[#FFC800] rounded-2xl px-3 sm:px-3.5 py-1.5 sm:py-2 shadow-lg shadow-[#FFC800]/25 border-2 border-white z-20"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <span className={`${inter.className} text-[11px] sm:text-xs font-extrabold text-black`}>⚡ 2-4 Wk Sprint</span>
+            </motion.div>
+
             {/* Main Card */}
-            <div className="rounded-[28px] bg-white border border-neutral-200/60 shadow-[0_24px_80px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.03)] p-5 sm:p-7 flex flex-col gap-5 relative overflow-hidden">
+            <div className="rounded-[24px] sm:rounded-[28px] bg-white border border-neutral-200/60 shadow-[0_24px_80px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.03)] p-4 sm:p-7 pt-6 pb-6 sm:pt-7 sm:pb-7 flex flex-col gap-4 sm:gap-5 relative overflow-hidden">
               {/* Top ambient orb */}
               <div
                 className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-[80px] pointer-events-none transition-colors duration-700"
@@ -265,12 +302,12 @@ export default function Home() {
               />
 
               {/* Tab Switcher */}
-              <div className="flex gap-1.5 p-1.5 bg-[#F5F5F3] rounded-2xl relative z-10">
+              <div className="grid grid-cols-3 gap-1 p-1 sm:p-1.5 bg-[#F5F5F3] rounded-2xl relative z-10">
                 {products.map((p, i) => (
                   <button
                     key={p.label}
                     onClick={() => setActiveTab(i)}
-                    className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-400 relative ${
+                    className={`py-2 sm:py-2.5 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all duration-400 relative flex items-center justify-center gap-1 sm:gap-1.5 overflow-hidden ${
                       activeTab === i ? 'text-white' : 'text-neutral-500 hover:text-neutral-800'
                     }`}
                   >
@@ -281,7 +318,8 @@ export default function Home() {
                         transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                       />
                     )}
-                    <span className="relative z-10">{p.emoji} {p.label}</span>
+                    <span className="relative z-10 text-xs sm:text-sm">{p.emoji}</span>
+                    <span className="relative z-10 truncate text-[11px] sm:text-xs">{p.label}</span>
                   </button>
                 ))}
               </div>
@@ -309,13 +347,13 @@ export default function Home() {
                   className="relative z-10"
                 >
                   {/* Status Header */}
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-2.5 sm:mb-3">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-[#22C55E] rounded-full animate-pulse" />
-                      <span className={`${inter.className} text-[10px] font-bold text-neutral-500 uppercase tracking-[1.5px]`}>Live Preview</span>
+                      <span className={`${inter.className} text-[9px] sm:text-[10px] font-bold text-neutral-500 uppercase tracking-[1.2px] sm:tracking-[1.5px]`}>Live Preview</span>
                     </div>
                     <span
-                      className={`${inter.className} text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full`}
+                      className={`${inter.className} text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full`}
                       style={{ color: current.accent, backgroundColor: `${current.accent}15` }}
                     >
                       Weplic Studio
@@ -323,25 +361,25 @@ export default function Home() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-clash text-[26px] sm:text-[32px] font-bold text-[#040300] leading-tight mb-1.5">
+                  <h3 className="font-clash text-[22px] sm:text-[32px] font-bold text-[#040300] leading-tight mb-1 sm:mb-1.5">
                     {current.title}
                   </h3>
-                  <p className={`${inter.className} text-sm text-neutral-500 leading-relaxed mb-5`}>
+                  <p className={`${inter.className} text-xs sm:text-sm text-neutral-500 leading-relaxed mb-4 sm:mb-5`}>
                     {current.desc}
                   </p>
 
                   {/* Metrics Grid */}
-                  <div className="grid grid-cols-3 gap-2.5 mb-5">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 mb-4 sm:mb-5">
                     {current.metrics.map((m, i) => (
                       <motion.div
                         key={m.lbl}
-                        className="bg-[#FAFAF7] rounded-2xl p-3 sm:p-3.5 border border-neutral-100 text-center hover:border-neutral-300 transition-colors"
+                        className="bg-[#FAFAF7] rounded-xl sm:rounded-2xl p-2 sm:p-3.5 border border-neutral-100 text-center hover:border-neutral-300 transition-colors overflow-hidden"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.08, type: 'spring' }}
                       >
-                        <p className="font-clash text-lg sm:text-xl font-bold text-[#040300]">{m.val}</p>
-                        <p className={`${inter.className} text-[10px] font-semibold text-neutral-400 mt-0.5 uppercase tracking-wider`}>{m.lbl}</p>
+                        <p className="font-clash text-base sm:text-xl font-bold text-[#040300] truncate">{m.val}</p>
+                        <p className={`${inter.className} text-[9px] sm:text-[10px] font-semibold text-neutral-400 mt-0.5 uppercase tracking-normal sm:tracking-wider truncate`}>{m.lbl}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -351,7 +389,7 @@ export default function Home() {
                     {current.tech.map((t, i) => (
                       <motion.span
                         key={t}
-                        className={`${inter.className} text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#040300] text-white`}
+                        className={`${inter.className} text-[10px] sm:text-[11px] font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#040300] text-white`}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.15 + i * 0.06, type: 'spring', stiffness: 250 }}
@@ -364,33 +402,25 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* Floating Badges */}
+            {/* Floating Bottom Badge */}
             <motion.div
-              className="absolute -top-3 right-0 sm:-right-4 bg-[#FFC800] rounded-2xl px-3.5 py-2 shadow-lg shadow-[#FFC800]/25 border-2 border-white z-20"
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <span className={`${inter.className} text-xs font-extrabold text-black`}>⚡ 2-4 Wk Sprint</span>
-            </motion.div>
-
-            <motion.div
-              className="absolute -bottom-3 left-0 sm:-left-4 bg-white rounded-2xl px-3.5 py-2 shadow-lg border border-neutral-200 z-20"
+              className="absolute -bottom-4 left-3 sm:-left-4 bg-white rounded-2xl px-3 sm:px-3.5 py-1.5 sm:py-2 shadow-lg border border-neutral-200 z-20"
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
             >
-              <span className={`${inter.className} text-xs font-bold text-[#040300]`}>✓ Production Ready</span>
+              <span className={`${inter.className} text-[11px] sm:text-xs font-bold text-[#040300]`}>✓ Production Ready</span>
             </motion.div>
           </motion.div>
 
           {/* Interaction Hint */}
           <motion.div
-            className="flex items-center justify-center gap-2 mt-5"
+            className="flex items-center justify-center gap-2 mt-4 sm:mt-5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 4 }}
           >
             <span className="w-1.5 h-1.5 bg-[#FFC800] rounded-full animate-pulse" />
-            <p className={`${inter.className} text-[11px] font-semibold text-neutral-400`}>
+            <p className={`${inter.className} text-[10px] sm:text-[11px] font-semibold text-neutral-400`}>
               Interactive — tap tabs to preview
             </p>
           </motion.div>
