@@ -4,7 +4,7 @@
 [![Styled with Tailwind](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 [![Animations by GSAP & Framer Motion](https://img.shields.io/badge/Animations-GSAP%20%2F%20Framer-yellow?style=flat-square)](https://gsap.com/)
 
-**Weplic** is an AI-native digital product studio that designs and builds production-grade web applications, mobile apps, and custom AI platforms for ambitious, high-growth startups. 
+**Weplic** is a Digital product studio that designs and builds production-grade web applications, mobile apps, and custom AI platforms for ambitious, high-growth startups. 
 
 This repository contains the official, fully interactive landing page and client portal for Weplic Studio.
 
