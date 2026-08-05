@@ -1,18 +1,42 @@
 'use client'
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 
+/**
+ * SSR-safe client mount detection using useSyncExternalStore.
+ * Returns false on server, true on client — zero extra renders,
+ * no useEffect + setState cascade.
+ */
+const emptySubscribe = () => () => {}
+function useIsClient() {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false)
+}
+
+/**
+ * Touch device detection — evaluated once at module load on client.
+ * Uses a function to defer evaluation (safe during SSR bundling).
+ */
+function getIsTouchDevice() {
+  if (typeof window === 'undefined') return false
+  return (
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(hover: none)').matches ||
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0
+  )
+}
+
 export default function CustomCursor() {
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const isClient = useIsClient()
   const cursorRef = useRef(null)
   const dotRef = useRef(null)
   const posRef = useRef({ x: -100, y: -100 })
   const visibleRef = useRef(false)
   const hoveringRef = useRef(false)
   const rafRef = useRef(null)
+  const isTouchRef = useRef(false)
 
-  const SIZE = 72 // X-ray lens size (matches Image 2 spec)
+  const SIZE = 72 // X-ray lens size
 
   const render = useCallback(() => {
     const cursor = cursorRef.current
@@ -23,7 +47,7 @@ export default function CustomCursor() {
     const scale = hoveringRef.current ? 1.35 : 1
     const opacity = visibleRef.current ? '1' : '0'
 
-    // 2D position translate (no 3D translate3d layer promotion)
+    // 2D translate (no translate3d GPU layer promotion)
     cursor.style.transform = `translate(${x - SIZE / 2}px, ${y - SIZE / 2}px) scale(${scale})`
     cursor.style.opacity = opacity
 
@@ -33,21 +57,10 @@ export default function CustomCursor() {
   }, [])
 
   useEffect(() => {
-    setMounted(true)
+    if (!isClient) return
 
-    const isTouch =
-      window.matchMedia('(pointer: coarse)').matches ||
-      window.matchMedia('(hover: none)').matches ||
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0
-
-    if (isTouch) {
-      setIsTouchDevice(true)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isTouchDevice || !mounted) return
+    isTouchRef.current = getIsTouchDevice()
+    if (isTouchRef.current) return
 
     const onMouseMove = (e) => {
       posRef.current.x = e.clientX
@@ -83,13 +96,14 @@ export default function CustomCursor() {
       document.removeEventListener('mouseenter', onMouseEnter)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [isTouchDevice, mounted, render])
+  }, [isClient, render])
 
-  if (isTouchDevice || !mounted) return null
+  // Don't render on server, or on touch devices
+  if (!isClient || getIsTouchDevice()) return null
 
   return createPortal(
     <>
-      {/* Main X-ray Lens Circle matching Image 2 */}
+      {/* Main X-ray Lens Circle */}
       <div
         ref={cursorRef}
         className="custom-cursor-lens"
