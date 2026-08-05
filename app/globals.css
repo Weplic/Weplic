@@ -67,32 +67,42 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Custom Cursor */
+/* Custom Cursor — hide native cursor on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-  html, body, *, *::before, *::after {
+  * {
     cursor: none !important;
   }
 }
 
-.custom-cursor {
+/* Custom Cursor — X-ray Lens matching Reference Design */
+.custom-cursor-lens {
   position: fixed;
   top: 0;
   left: 0;
-  width: 22px;
-  height: 22px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: #CBCBC7;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 0 16px rgba(255, 255, 255, 0.3);
+  mix-blend-mode: difference;
   pointer-events: none;
   z-index: 999999;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: opacity 0.15s ease, transform 0.12s ease-out;
 }
 
-.custom-cursor--active {
-  background: #E8E8E3;
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+.custom-cursor-center-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 1000000;
+  transition: opacity 0.15s ease, transform 0.12s ease-out;
 }
 
 /* Shimmer animation */

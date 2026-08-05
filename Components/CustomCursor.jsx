@@ -1,76 +1,113 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 export default function CustomCursor() {
-  const [isVisible, setIsVisible] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const cursorRef = useRef(null)
+  const dotRef = useRef(null)
+  const posRef = useRef({ x: -100, y: -100 })
+  const visibleRef = useRef(false)
+  const hoveringRef = useRef(false)
+  const rafRef = useRef(null)
 
-  const cursorX = useMotionValue(-100)
-  const cursorY = useMotionValue(-100)
+  const SIZE = 72 // X-ray lens size (matches Image 2 spec)
 
-  const springConfig = { damping: 28, stiffness: 350 }
-  const cursorXSpring = useSpring(cursorX, springConfig)
-  const cursorYSpring = useSpring(cursorY, springConfig)
+  const render = useCallback(() => {
+    const cursor = cursorRef.current
+    const dot = dotRef.current
+    if (!cursor || !dot) return
+
+    const { x, y } = posRef.current
+    const scale = hoveringRef.current ? 1.35 : 1
+    const opacity = visibleRef.current ? '1' : '0'
+
+    // 2D position translate (no 3D translate3d layer promotion)
+    cursor.style.transform = `translate(${x - SIZE / 2}px, ${y - SIZE / 2}px) scale(${scale})`
+    cursor.style.opacity = opacity
+
+    // Center dot
+    dot.style.transform = `translate(${x - 3}px, ${y - 3}px) scale(${hoveringRef.current ? 0 : 1})`
+    dot.style.opacity = opacity
+  }, [])
 
   useEffect(() => {
-    // Detect touch/coarse pointer devices
-    const isTouch = window.matchMedia('(pointer: coarse)').matches ||
+    setMounted(true)
+
+    const isTouch =
+      window.matchMedia('(pointer: coarse)').matches ||
       window.matchMedia('(hover: none)').matches ||
       'ontouchstart' in window ||
       navigator.maxTouchPoints > 0
 
     if (isTouch) {
-      setTimeout(() => {
-        setIsTouchDevice(true)
-      }, 0)
+      setIsTouchDevice(true)
     }
   }, [])
 
   useEffect(() => {
-    if (isTouchDevice) return
+    if (isTouchDevice || !mounted) return
 
-    const moveCursor = (e) => {
-      cursorX.set(e.clientX - 11)
-      cursorY.set(e.clientY - 11)
-      setIsVisible((prev) => (prev ? prev : true))
+    const onMouseMove = (e) => {
+      posRef.current.x = e.clientX
+      posRef.current.y = e.clientY
+      visibleRef.current = true
 
-      // Detect hovering over interactive elements
       const target = e.target
-      const isInteractive = target?.closest('a, button, [role="button"], input, textarea, select, [data-cursor-hover]')
-      setIsHovering(!!isInteractive)
+      hoveringRef.current = !!target?.closest(
+        'a, button, [role="button"], input, textarea, select, [data-cursor-hover]'
+      )
+
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(render)
     }
 
-    const handleMouseLeave = () => setIsVisible(false)
-    const handleMouseEnter = () => setIsVisible(true)
+    const onMouseLeave = () => {
+      visibleRef.current = false
+      requestAnimationFrame(render)
+    }
 
-    window.addEventListener('mousemove', moveCursor)
-    document.addEventListener('mouseleave', handleMouseLeave)
-    document.addEventListener('mouseenter', handleMouseEnter)
+    const onMouseEnter = () => {
+      visibleRef.current = true
+      requestAnimationFrame(render)
+    }
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    document.addEventListener('mouseleave', onMouseLeave)
+    document.addEventListener('mouseenter', onMouseEnter)
 
     return () => {
-      window.removeEventListener('mousemove', moveCursor)
-      document.removeEventListener('mouseleave', handleMouseLeave)
-      document.removeEventListener('mouseenter', handleMouseEnter)
+      window.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mouseleave', onMouseLeave)
+      document.removeEventListener('mouseenter', onMouseEnter)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [cursorX, cursorY, isTouchDevice])
+  }, [isTouchDevice, mounted, render])
 
-  // Render nothing on touch/mobile devices
-  if (isTouchDevice) return null
+  if (isTouchDevice || !mounted) return null
 
-  return (
-    <motion.div
-      className={`custom-cursor ${isHovering ? 'custom-cursor--active' : ''}`}
-      style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
-        opacity: isVisible ? 1 : 0,
-      }}
-      animate={{
-        scale: isHovering ? 1.5 : 1,
-      }}
-      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-    />
+  return createPortal(
+    <>
+      {/* Main X-ray Lens Circle matching Image 2 */}
+      <div
+        ref={cursorRef}
+        className="custom-cursor-lens"
+        style={{
+          opacity: 0,
+          transform: 'translate(-100px, -100px)',
+        }}
+      />
+      {/* Precision Center Dot */}
+      <div
+        ref={dotRef}
+        className="custom-cursor-center-dot"
+        style={{
+          opacity: 0,
+          transform: 'translate(-100px, -100px)',
+        }}
+      />
+    </>,
+    document.body
   )
 }
