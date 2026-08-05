@@ -67,8 +67,8 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Custom Cursor — hide native cursor on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
+/* Custom Cursor — hide native cursor on desktop screens only */
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
   * {
     cursor: none !important;
   }

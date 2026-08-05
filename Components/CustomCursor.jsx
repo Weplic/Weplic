@@ -16,14 +16,15 @@ function useIsClient() {
  * Touch device detection — evaluated once at module load on client.
  * Uses a function to defer evaluation (safe during SSR bundling).
  */
-function getIsTouchDevice() {
-  if (typeof window === 'undefined') return false
-  return (
+function getShouldHideCursor() {
+  if (typeof window === 'undefined') return true
+  const isTouch =
     window.matchMedia('(pointer: coarse)').matches ||
     window.matchMedia('(hover: none)').matches ||
     'ontouchstart' in window ||
     navigator.maxTouchPoints > 0
-  )
+  const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+  return isTouch || !isDesktop
 }
 
 export default function CustomCursor() {
@@ -59,7 +60,7 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!isClient) return
 
-    isTouchRef.current = getIsTouchDevice()
+    isTouchRef.current = getShouldHideCursor()
     if (isTouchRef.current) return
 
     const onMouseMove = (e) => {
@@ -98,8 +99,8 @@ export default function CustomCursor() {
     }
   }, [isClient, render])
 
-  // Don't render on server, or on touch devices
-  if (!isClient || getIsTouchDevice()) return null
+  // Don't render on server, touch devices, or non-desktop screens
+  if (!isClient || getShouldHideCursor()) return null
 
   return createPortal(
     <>
